@@ -1,0 +1,40 @@
+.digits
+  text-align: right
+  
+.allingredients__heading
+  /*  */
+  th a
+    @extend %header-font
+    color: $highlight
+
+  th + th 
+    padding-left: .5em
+
+.allingredients__body
+  /*  */
+
+  td + td
+    margin-left: .5em
+  td:first-child
+    padding-left: .5em
+  td:last-child
+    padding-right: .5em
+
+.ingredient
+  padding: .5em
+
+  &:hover
+    background-color: rgba($link, .2)
+
+.ingredient__name
+  /*  */
+  
+  .ingredient__name, 
+    @extend %header-font
+    color: $link
+    text-decoration: underline
+
+  & > div
+    display: inline-block
+    clear:none
+    vertical-align: middle
