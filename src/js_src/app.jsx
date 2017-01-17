@@ -109,21 +109,7 @@
 	}
 	];
 
-/// all
 
-	var PageHeader = React.createClass({
-		render: function() {
-			return (
-				<div className="page__title">
-				<h1>Recipe Box</h1>
-				<h2>Don't worry, all your recipes will be stored locally.</h2>
-
-				<em>Project by <a href="http://vladimirlogachev.ru" target="_blank" rel="noopener noreferrer">Vladimir Logachev</a>. </em>
-				<em>Made with React and SASS. <a href="https://github.com/LogachevFCCprojects/RecipeBox" target="_blank" rel="noopener noreferrer">Github</a></em>
-				</div>
-				)
-		}
-	});
 
 /// list
 
@@ -204,9 +190,6 @@
 	});
 
 	var SingleRecipe = React.createClass({
-		componentWillUnmount: function() {
-			console.log('— '+this.props.recipe.name + ' '+ this.props.recipeId); // ошибается и выдает в консоль хуету!
-		},
 		render: function() {
 			var recipe = this.props.recipe,
 				recipeId = this.props.recipeId;
@@ -248,14 +231,6 @@
 
 /// edit
 	var EditorSingleIngredient = React.createClass({
-		getInitialState: function() {
-			return {
-				name: this.props.ingredient.name,
-				amount: this.props.ingredient.amount,
-				measure: this.props.ingredient.measure,
-				ingredientId: this.props.ingredientId
-			};
-		},
 		removeButtonClick: function(id, e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -267,37 +242,54 @@
 			// editor redraws without 1 line
 			window.ee.emit('Ingredient.remove', id);
 		},
+		componentWillUnmount: function() {
+			console.log('— '+this.props.ingredient.name); // ошибается и выдает в консоль хуету!
+		},
+		componentDidMount: function() {
+			ReactDOM.findDOMNode(this.refs.name).value = this.props.ingredient.name;
+			ReactDOM.findDOMNode(this.refs.amount).value = this.props.ingredient.amount;
+			ReactDOM.findDOMNode(this.refs.measure).value = this.props.ingredient.measure;
+		},
+		componentDidUpdate: function() {
+			ReactDOM.findDOMNode(this.refs.name).value = this.props.ingredient.name;
+			ReactDOM.findDOMNode(this.refs.amount).value = this.props.ingredient.amount;
+			ReactDOM.findDOMNode(this.refs.measure).value = this.props.ingredient.measure;
+		},
 		onFieldChange: function(fieldName, e) {
-			console.log('onFieldChange();');
+			var obj = [];
+			obj.name = ReactDOM.findDOMNode(this.refs.name).value;
+			obj.amount = ReactDOM.findDOMNode(this.refs.amount).value;
+			obj.measure = ReactDOM.findDOMNode(this.refs.measure).value;
+			obj.id = this.props.ingredientId;
+			window.ee.emit('Ingredient.update', obj);
 		},
 		render: function() {
-			var name = this.state.name,
-				amount = this.state.amount,
-				measure = this.state.measure,
-				ingredientId = this.state.ingredientId;
-			console.log('+ EditorSingleIngredient ('+name+');');
+			var name = this.props.ingredient.name,
+				amount = this.props.ingredient.amount,
+				measure = this.props.ingredient.measure,
+				ingredientId = this.props.ingredientId;
 			return (
 				<tr className="ingredient">
 					<td className="ingredient__name" >
-						<input type='text' onChange={this.onFieldChange} placeholder='Ingredient name' ref='name' defaultValue={name}/>
+						<input type='text' onChange={this.onFieldChange} placeholder='Ingredient name' ref='name'/>
 					</td>
 					<td className="ingredient__amount digits" >
-						<input type='text' placeholder='amount' ref='amount' defaultValue={amount}/>
+						<input type='text' onChange={this.onFieldChange} placeholder='amount' ref='amount'/>
 					</td>
 					<td className="ingredient__measure" >
-						<input type='text' placeholder='amount' ref='measure' defaultValue={measure}/>
+						<input type='text' onChange={this.onFieldChange} placeholder='measure' ref='measure'/>
 						<button onClick={this.removeButtonClick.bind(this, ingredientId)} >X</button>
 					</td>
 				</tr>
 				)
 		}
+
 	});
 
 	var EditorIngredients = React.createClass({
 		render: function() {
 			var ingredients = this.props.data;
 			var ingredientsTemplate;
-
 			if (ingredients.length > 0) {
 				ingredientsTemplate = ingredients.map(function(item, index) {
 					return (
@@ -319,34 +311,12 @@
 		}
 	});
 
-	var EditorControls = React.createClass({
-		saveButtonClick: function(recipeId, e) {
-			e.preventDefault();
-			e.stopPropagation();
-			// собирать recipe по кусочкам из state
-			// отправлять и id и объект
-			window.ee.emit('Recipe.publish', recipeId);
-		},
-		cancelButtonClick: function(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			window.ee.emit('Recipe.cancel');
-		},
-		render: function() {
-			var recipeId = this.props.recipeId;
-			return (
-				<div className="recipe__controls">
-					<button onClick={this.saveButtonClick.bind(this, recipeId)} >Save</button>
-					<button onClick={this.cancelButtonClick} >Cancel</button>
-				</div>
-				);
-		}
-	});
-
 	var RecipeEditor = React.createClass({
 		getInitialState: function() {
 			return {
+				name: this.props.recipe.name,
 				ingredients: this.props.recipe.ingredients,
+				instructions: this.props.recipe.instructions
 			};
 		},
 		componentDidMount: function() {
@@ -357,26 +327,62 @@
 				nextList.splice(id, 1);
 				self.setState({ingredients: nextList});
 			});
+			window.ee.addListener('Ingredient.update', function(obj) {
+				var nextList = self.state.ingredients.clone();
+				nextList[obj.id].name = obj.name;
+				nextList[obj.id].amount = obj.amount;
+				nextList[obj.id].measure = obj.measure;
+				self.setState({ingredients: nextList});
+			});
+			ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
+			ReactDOM.findDOMNode(this.refs.instructions).value = this.state.instructions;
+		},
+		componentDidUpdate: function() {
+			ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
+			ReactDOM.findDOMNode(this.refs.instructions).value = this.state.instructions;
 		},
 		componentWillUnmount: function() {
 			window.ee.removeListener('Ingredient.remove');
 		},
+		onFieldChange: function(fieldName, e) {
+			this.setState({
+				name: ReactDOM.findDOMNode(this.refs.name).value, 
+				instructions: ReactDOM.findDOMNode(this.refs.instructions).value
+			});
+		},
+		saveButtonClick: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			var obj = [];
+			obj.id = this.props.recipeId;
+			obj.name = ReactDOM.findDOMNode(this.refs.name).value;
+			obj.ingredients = this.state.ingredients.clone();
+			obj.instructions = ReactDOM.findDOMNode(this.refs.instructions).value;
+
+			window.ee.emit('Recipe.publish', obj);
+		},
+		cancelButtonClick: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			window.ee.emit('Recipe.cancel');
+		},
 		render: function() {
 			var recipe = this.props.recipe,
-				ingredients = this.state.ingredients,
-				recipeId = this.props.recipeId;
-			console.log('+ RecipeEditor ('+recipe.name+');');
-			console.log(recipe);
+				ingredients = this.state.ingredients;
 			return (
 				<div className="recipe-editor">
 					<h1 className="recipe__name" >
-						<input type='text' placeholder='Recipe name' ref='name' value={recipe.name}/>
+						<input type='text' onChange={this.onFieldChange} placeholder='Recipe name' ref='name'/>
 					</h1>
 					
 					<EditorIngredients data={ingredients}/>
 					<h3>Instructions:</h3>
-					<textarea className='recipe__instructions' placeholder='Recipe instructions' ref='instructions'  value={recipe.instructions}></textarea>
-					<EditorControls recipeId={recipeId} />
+					<textarea className='recipe__instructions' onChange={this.onFieldChange} placeholder='Recipe instructions' ref='instructions'></textarea>
+					<div className="recipe__controls">
+						<button onClick={this.saveButtonClick} >Save</button>
+						<button onClick={this.cancelButtonClick} >Cancel</button>
+					</div>
 				</div>
 				);
 		}
@@ -404,12 +410,20 @@
 			window.ee.addListener('Recipe.edit', function(id) {
 				self.setState({pageNavigator: {currentView: 'edit', recipeId: id}});
 			});
-			window.ee.addListener('Recipe.publish', function(id) {
-				// PUSH or EDIT ?
-				// we should take an object, not only id
-				// + date update
-				console.log('publish: '+id);
-				self.setState({pageNavigator: {currentView: 'list', recipeId: -1}});
+			window.ee.addListener('Recipe.publish', function(obj) {
+				var nextRecipeList = self.state.recipeList.clone();
+				nextRecipeList[obj.id] || (obj.id = nextRecipeList.push() - 1);
+
+				nextRecipeList[obj.id].name = obj.name;
+				nextRecipeList[obj.id].ingredients = obj.ingredients.clone();
+				nextRecipeList[obj.id].instructions = obj.instructions;
+				nextRecipeList[obj.id].date = 'today ZZZ'; //todo
+				console.log('_______________');
+				console.log(obj);
+				self.setState({
+					recipeList: nextRecipeList, 
+					pageNavigator: {currentView: 'list', recipeId: -1}
+				});
 			});
 			window.ee.addListener('Recipe.cancel', function() {
 				self.setState({pageNavigator: {currentView: 'list', recipeId: -1}});
@@ -434,6 +448,22 @@
 				{ (currentView === 'edit') && <RecipeEditor recipeId={recipeId} recipe={recipeList[recipeId]}/> }
 				</section>
 				);
+		}
+	});
+
+/// all
+
+	var PageHeader = React.createClass({
+		render: function() {
+			return (
+				<div className="page__title">
+				<h1>Recipe Box</h1>
+				<h2>Don't worry, all your recipes will be stored locally.</h2>
+
+				<em>Project by <a href="http://vladimirlogachev.ru" target="_blank" rel="noopener noreferrer">Vladimir Logachev</a>. </em>
+				<em>Made with React and SASS. <a href="https://github.com/LogachevFCCprojects/RecipeBox" target="_blank" rel="noopener noreferrer">Github</a></em>
+				</div>
+				)
 		}
 	});
 
