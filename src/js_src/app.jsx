@@ -1,8 +1,11 @@
 (function () {
 	'use strict';
-	var recipeList = [
+
+	window.ee = new EventEmitter();
+
+	var initialRecipeList = [
 	{
-		name: 'black tea wit suga',
+		name: 'xxx',
 		ingredients: [
 		{
 			name: 'water',
@@ -11,7 +14,7 @@
 		},
 		{
 			name: 'sugar',
-			amount: 5,
+			amount: 4,
 			measure: 'g'
 		},
 		{
@@ -74,7 +77,6 @@
 
 	var PageHeader = React.createClass({
 		render: function() {
-			console.log(this.props.data);
 			return (
 				<div className="page__title">
 				<h1>Recipe Box</h1>
@@ -89,7 +91,6 @@
 
 	var SingleIngredient = React.createClass({
 		render: function() {
-			console.log(this.props.data);
 			var ingredient = this.props.data;
 			return (
 				<tr className="ingredient">
@@ -117,7 +118,6 @@
 
 	var Ingredients = React.createClass({
 		render: function() {
-			console.log(this.props.data);
 			var ingredients = this.props.data;
 			var ingredientsTemplate;
 
@@ -143,10 +143,23 @@
 	});
 
 	var RecipeControls = React.createClass({
+		removeButtonClick: function(recipeId, e) {
+			e.preventDefault();
+			e.stopPropagation();
+			window.ee.emit('Recipe.remove', recipeId);
+		},
+		editButtonClick: function(recipeId, e) {
+			e.preventDefault();
+			e.stopPropagation();
+			window.ee.emit('Recipe.edit', recipeId);
+		},
 		render: function() {
+			var recipeId = this.props.recipeId;
+			console.log(this.props.recipeId);
 			return (
 				<div className="recipe__controls">
-					<p>Remove | Edit.</p>
+					<button onClick={this.removeButtonClick.bind(this, recipeId)} >Remove</button>
+					<button onClick={this.editButtonClick.bind(this, recipeId)} >Edit</button>
 				</div>
 				);
 		}
@@ -154,7 +167,8 @@
 
 	var SingleRecipe = React.createClass({
 		render: function() {
-			var recipe = this.props.data;
+			var recipe = this.props.data,
+			recipeId = this.props.recipeId;
 			return (
 				<div className="recipe" >
 					<h1 className="recipe__name" >{recipe.name}</h1>
@@ -162,7 +176,7 @@
 					<Ingredients data={recipe.ingredients}/>
 					<p className="recipe__instructions" >Instructions: {recipe.instructions}</p>
 					<p className="recipe__date" >Date: {recipe.date}</p>
-					<RecipeControls />
+					<RecipeControls recipeId={recipeId} />
 				</div>
 				);
 		}
@@ -170,13 +184,13 @@
 
 	var RecipeList = React.createClass({
 		render: function() {
-			var recipeList = this.props.data;
+			var recipeList = this.props.recipeList;
 			var RecipeListTemplate;
 
 			if (recipeList.length > 0) {
 				RecipeListTemplate = recipeList.map(function(item, index) {
 					return (
-						<SingleRecipe data={item} key={index} />
+						<SingleRecipe recipeId={index} data={item} key={index}/>
 						)
 				})
 			} else {
@@ -192,11 +206,34 @@
 	});
 
 	var App = React.createClass({
+		// state is only here
+		// we should dump state to storage every time
+		getInitialState: function() {
+			return {
+				recipeList: initialRecipeList
+			};
+		},
+		componentDidMount: function() {
+			var self = this;
+			window.ee.addListener('Recipe.remove', function(id) {
+				var nextList = self.state.recipeList;
+				nextList.splice(id, 1);
+				self.setState({recipeList: nextList});
+			});
+			window.ee.addListener('Recipe.edit', function(id) {
+				console.log('draw edit form for '+id);
+			});
+		},
+		componentWillUnmount: function() {
+			window.ee.removeListener('Recipe.remove');
+			window.ee.removeListener('Recipe.edit');
+		},
 		render: function() {
+			var recipeList = this.state.recipeList;
 			return (
 				<section>
 				<PageHeader />
-					<RecipeList data={recipeList}/>
+				<RecipeList recipeList={recipeList}/>
 				</section>
 				);
 		}

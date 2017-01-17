@@ -16,6 +16,7 @@
 1. Install **Node.js**
 2. Execute `npm i --save-dev` in project directory to install all dependencies.
 3. Execute `bower i react` in project directory to install react.
+4. Execute `bower i eventEmitter` in project directory to install EventEmitter.
 
 ## Watching ##
 Execute `gulp watch` and browser will open.

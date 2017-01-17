@@ -43,7 +43,8 @@ gulp.task('js', () =>
 gulp.task('jslibs', () =>
     gulp.src([
         'src/libs/react/react.min.js',
-        'src/libs/react/react-dom.min.js'
+        'src/libs/react/react-dom.min.js',
+        'src/libs/eventEmitter/EventEmitter.min.js'
         ])
     .pipe(gulp.dest('src/js'))
     );
@@ -100,7 +101,8 @@ gulp.task('build_js', () =>
 gulp.task('build_jslibs', () =>
     gulp.src([
         'src/libs/react/react.min.js',
-        'src/libs/react/react-dom.min.js'
+        'src/libs/react/react-dom.min.js',
+        'src/libs/eventEmitter/EventEmitter.min.js'
         ])
     .pipe(gulp.dest('build/js'))
     );
