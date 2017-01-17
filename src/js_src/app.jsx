@@ -155,7 +155,6 @@
 		},
 		render: function() {
 			var recipeId = this.props.recipeId;
-			console.log(this.props.recipeId);
 			return (
 				<div className="recipe__controls">
 					<button onClick={this.removeButtonClick.bind(this, recipeId)} >Remove</button>
@@ -205,12 +204,55 @@
 		}
 	});
 
+	var EditorControls = React.createClass({
+		saveButtonClick: function(recipeId, e) {
+			e.preventDefault();
+			e.stopPropagation();
+			// собирать recipe по кусочкам из ref
+			// отправлять и id и объект
+			window.ee.emit('Recipe.publish', recipeId);
+		},
+		cancelButtonClick: function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			window.ee.emit('Recipe.cancel');
+		},
+		render: function() {
+			var recipeId = this.props.recipeId;
+			return (
+				<div className="recipe__controls">
+					<button onClick={this.saveButtonClick.bind(this, recipeId)} >Save</button>
+					<button onClick={this.cancelButtonClick} >Cancel</button>
+				</div>
+				);
+		}
+	});
+
+	var RecipeEditor = React.createClass({
+		render: function() {
+			var recipe = this.props.recipe,
+				recipeId = this.props.recipeId;
+			console.log('<RecipeEditor> render();');
+			console.log(recipe);
+			return (
+				<div className="recipe-editor">
+					ok
+					<EditorControls recipeId={recipeId} />
+				</div>
+				);
+		}
+	});
+
 	var App = React.createClass({
 		// state is only here
 		// we should dump state to storage every time
 		getInitialState: function() {
 			return {
-				recipeList: initialRecipeList
+				recipeList: initialRecipeList,
+				navigator: {
+					currentView: 'list',
+					recipeId: -1
+				}
 			};
 		},
 		componentDidMount: function() {
@@ -221,19 +263,34 @@
 				self.setState({recipeList: nextList});
 			});
 			window.ee.addListener('Recipe.edit', function(id) {
-				console.log('draw edit form for '+id);
+				self.setState({navigator: {currentView: 'edit', recipeId: id}});
+			});
+			window.ee.addListener('Recipe.publish', function(id) {
+				// PUSH or EDIT ?
+				// we should take an object, not only id
+				console.log('published: '+id);
+				self.setState({navigator: {currentView: 'list', recipeId: -1}});
+			});
+			window.ee.addListener('Recipe.cancel', function() {
+				self.setState({navigator: {currentView: 'list', recipeId: -1}});
 			});
 		},
 		componentWillUnmount: function() {
 			window.ee.removeListener('Recipe.remove');
 			window.ee.removeListener('Recipe.edit');
+			window.ee.removeListener('Recipe.publish');
+			window.ee.removeListener('Recipe.cancel');
 		},
 		render: function() {
-			var recipeList = this.state.recipeList;
+			var recipeList = this.state.recipeList,
+			currentView = this.state.navigator.currentView,
+			recipeId = this.state.navigator.recipeId;
+			console.log('<App> render('+currentView+');');
 			return (
 				<section>
 				<PageHeader />
-				<RecipeList recipeList={recipeList}/>
+				{ (currentView === 'list') && <RecipeList recipeList={recipeList}/> }
+				{ (currentView === 'edit') && <RecipeEditor recipeId={recipeId} recipe={recipeList[recipeId]}/> }
 				</section>
 				);
 		}
