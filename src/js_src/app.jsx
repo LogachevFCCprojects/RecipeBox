@@ -3,6 +3,17 @@
 
 	window.ee = new EventEmitter();
 
+	Array.prototype.clone = function () {
+		var arr = this.slice(0), i;
+		for (i = 0; i < this.length; i += 1) {
+			if (this[i].clone) {
+                //recursion
+                arr[i] = this[i].clone();
+            }
+        }
+        return arr;
+    };
+
 	var initialRecipeList = [
 	{
 		name: 'xxx',
@@ -75,6 +86,8 @@
 	}
 	];
 
+/// all
+
 	var PageHeader = React.createClass({
 		render: function() {
 			return (
@@ -88,6 +101,8 @@
 				)
 		}
 	});
+
+/// list
 
 	var SingleIngredient = React.createClass({
 		render: function() {
@@ -165,9 +180,12 @@
 	});
 
 	var SingleRecipe = React.createClass({
+		componentWillUnmount: function() {
+			console.log('— '+this.props.recipe.name + ' '+ this.props.recipeId); // ошибается и выдает в консоль хуету!
+		},
 		render: function() {
-			var recipe = this.props.data,
-			recipeId = this.props.recipeId;
+			var recipe = this.props.recipe,
+				recipeId = this.props.recipeId;
 			return (
 				<div className="recipe" >
 					<h1 className="recipe__name" >{recipe.name}</h1>
@@ -189,7 +207,7 @@
 			if (recipeList.length > 0) {
 				RecipeListTemplate = recipeList.map(function(item, index) {
 					return (
-						<SingleRecipe recipeId={index} data={item} key={index}/>
+						<SingleRecipe recipeId={index} recipe={item} key={index}/>
 						)
 				})
 			} else {
@@ -204,11 +222,84 @@
 		}
 	});
 
+/// edit
+	var EditorSingleIngredient = React.createClass({
+		getInitialState: function() {
+			return {
+				name: this.props.ingredient.name,
+				amount: this.props.ingredient.amount,
+				measure: this.props.ingredient.measure,
+				ingredientId: this.props.ingredientId
+			};
+		},
+		removeButtonClick: function(id, e) {
+			e.preventDefault();
+			e.stopPropagation();
+			console.log ('ee > Ingredient.remove '+id);
+			// get all 3 refs
+			// prepare a line for an event
+
+			// send event to the Editor, not to App
+			// editor redraws without 1 line
+			window.ee.emit('Ingredient.remove', id);
+		},
+		onFieldChange: function(fieldName, e) {
+			console.log('onFieldChange();');
+		},
+		render: function() {
+			var name = this.state.name,
+				amount = this.state.amount,
+				measure = this.state.measure,
+				ingredientId = this.state.ingredientId;
+			console.log('+ EditorSingleIngredient ('+name+');');
+			return (
+				<tr className="ingredient">
+					<td className="ingredient__name" >
+						<input type='text' onChange={this.onFieldChange} placeholder='Ingredient name' ref='name' defaultValue={name}/>
+					</td>
+					<td className="ingredient__amount digits" >
+						<input type='text' placeholder='amount' ref='amount' defaultValue={amount}/>
+					</td>
+					<td className="ingredient__measure" >
+						<input type='text' placeholder='amount' ref='measure' defaultValue={measure}/>
+						<button onClick={this.removeButtonClick.bind(this, ingredientId)} >X</button>
+					</td>
+				</tr>
+				)
+		}
+	});
+
+	var EditorIngredients = React.createClass({
+		render: function() {
+			var ingredients = this.props.data;
+			var ingredientsTemplate;
+
+			if (ingredients.length > 0) {
+				ingredientsTemplate = ingredients.map(function(item, index) {
+					return (
+						<EditorSingleIngredient ingredient={item} ingredientId={index} key={index} />
+						)
+				})
+			} else {
+				ingredientsTemplate = <p>No ingredients in this recipe</p>
+			}
+
+			return (
+				<table className="allingredients">
+					<IngredientsHeading/>
+					<tbody className="allingredients__body">
+						{ingredientsTemplate}
+					</tbody>
+				</table>
+				);
+		}
+	});
+
 	var EditorControls = React.createClass({
 		saveButtonClick: function(recipeId, e) {
 			e.preventDefault();
 			e.stopPropagation();
-			// собирать recipe по кусочкам из ref
+			// собирать recipe по кусочкам из state
 			// отправлять и id и объект
 			window.ee.emit('Recipe.publish', recipeId);
 		},
@@ -229,14 +320,38 @@
 	});
 
 	var RecipeEditor = React.createClass({
+		getInitialState: function() {
+			return {
+				ingredients: this.props.recipe.ingredients,
+			};
+		},
+		componentDidMount: function() {
+			var self = this;
+			window.ee.addListener('Ingredient.remove', function(id) {
+				console.log ('Listener > Ingredient.remove '+id);
+				var nextList = self.state.ingredients.clone();
+				nextList.splice(id, 1);
+				self.setState({ingredients: nextList});
+			});
+		},
+		componentWillUnmount: function() {
+			window.ee.removeListener('Ingredient.remove');
+		},
 		render: function() {
 			var recipe = this.props.recipe,
+				ingredients = this.state.ingredients,
 				recipeId = this.props.recipeId;
-			console.log('<RecipeEditor> render();');
+			console.log('+ RecipeEditor ('+recipe.name+');');
 			console.log(recipe);
 			return (
 				<div className="recipe-editor">
-					ok
+					<h1 className="recipe__name" >
+						<input type='text' placeholder='Recipe name' ref='name' value={recipe.name}/>
+					</h1>
+					
+					<EditorIngredients data={ingredients}/>
+					<h3>Instructions:</h3>
+					<textarea className='recipe__instructions' placeholder='Recipe instructions' ref='instructions'  value={recipe.instructions}></textarea>
 					<EditorControls recipeId={recipeId} />
 				</div>
 				);
@@ -249,30 +364,31 @@
 		getInitialState: function() {
 			return {
 				recipeList: initialRecipeList,
-				navigator: {
-					currentView: 'list',
-					recipeId: -1
+				pageNavigator: {
+					currentView: 'edit',
+					recipeId: 1
 				}
 			};
 		},
 		componentDidMount: function() {
 			var self = this;
 			window.ee.addListener('Recipe.remove', function(id) {
-				var nextList = self.state.recipeList;
+				var nextList = self.state.recipeList.clone();
 				nextList.splice(id, 1);
 				self.setState({recipeList: nextList});
 			});
 			window.ee.addListener('Recipe.edit', function(id) {
-				self.setState({navigator: {currentView: 'edit', recipeId: id}});
+				self.setState({pageNavigator: {currentView: 'edit', recipeId: id}});
 			});
 			window.ee.addListener('Recipe.publish', function(id) {
 				// PUSH or EDIT ?
 				// we should take an object, not only id
-				console.log('published: '+id);
-				self.setState({navigator: {currentView: 'list', recipeId: -1}});
+				// + date update
+				console.log('publish: '+id);
+				self.setState({pageNavigator: {currentView: 'list', recipeId: -1}});
 			});
 			window.ee.addListener('Recipe.cancel', function() {
-				self.setState({navigator: {currentView: 'list', recipeId: -1}});
+				self.setState({pageNavigator: {currentView: 'list', recipeId: -1}});
 			});
 		},
 		componentWillUnmount: function() {
@@ -283,9 +399,10 @@
 		},
 		render: function() {
 			var recipeList = this.state.recipeList,
-			currentView = this.state.navigator.currentView,
-			recipeId = this.state.navigator.recipeId;
-			console.log('<App> render('+currentView+');');
+			currentView = this.state.pageNavigator.currentView,
+			recipeId = this.state.pageNavigator.recipeId;
+			console.log('+ App ('+currentView+');');
+			console.log(recipeList);
 			return (
 				<section>
 				<PageHeader />
