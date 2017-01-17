@@ -16,20 +16,20 @@
 
 	var initialRecipeList = [
 	{
-		name: 'xxx',
+		name: 'Zero Recipe',
 		ingredients: [
 		{
-			name: 'water',
+			name: 'Ingredient 0.0',
 			amount: 250,
 			measure: 'ml'
 		},
 		{
-			name: 'sugar',
+			name: 'Ingredient 0.1',
 			amount: 4,
 			measure: 'g'
 		},
 		{
-			name: 'black tea',
+			name: 'Ingredient 0.2',
 			amount: 5,
 			measure: 'g'
 		}
@@ -39,20 +39,20 @@
 		date: 'today'
 	},
 	{
-		name: 'black tea wit suga',
+		name: 'One Recipe',
 		ingredients: [
 		{
-			name: 'water',
+			name: 'Ingredient 1.0',
 			amount: 250,
 			measure: 'ml'
 		},
 		{
-			name: 'sugar',
-			amount: 5,
+			name: 'Ingredient 1.1',
+			amount: 4,
 			measure: 'g'
 		},
 		{
-			name: 'black tea',
+			name: 'Ingredient 1.2',
 			amount: 5,
 			measure: 'g'
 		}
@@ -62,21 +62,44 @@
 		date: 'today'
 	},
 	{
-		name: 'another tea',
+		name: 'Two Recipe',
 		ingredients: [
 		{
-			name: 'cold water',
-			amount: 350,
+			name: 'Ingredient 2.0',
+			amount: 250,
 			measure: 'ml'
 		},
 		{
-			name: 'brown sugar',
-			amount: 7,
+			name: 'Ingredient 2.1',
+			amount: 4,
 			measure: 'g'
 		},
 		{
-			name: 'black tea',
-			amount: 8,
+			name: 'Ingredient 2.2',
+			amount: 5,
+			measure: 'g'
+		}
+
+		],
+		instructions: 'mix it up and wait 6 minutes',
+		date: 'yesterday'
+	},
+	{
+		name: 'Three Recipe',
+		ingredients: [
+		{
+			name: 'Ingredient 3.0',
+			amount: 250,
+			measure: 'ml'
+		},
+		{
+			name: 'Ingredient 3.1',
+			amount: 4,
+			measure: 'g'
+		},
+		{
+			name: 'Ingredient 3.2',
+			amount: 5,
 			measure: 'g'
 		}
 
@@ -161,6 +184,7 @@
 		removeButtonClick: function(recipeId, e) {
 			e.preventDefault();
 			e.stopPropagation();
+			console.log ('> emit > Ingredient.remove '+recipeId);
 			window.ee.emit('Recipe.remove', recipeId);
 		},
 		editButtonClick: function(recipeId, e) {
@@ -365,8 +389,8 @@
 			return {
 				recipeList: initialRecipeList,
 				pageNavigator: {
-					currentView: 'edit',
-					recipeId: 1
+					currentView: 'list',
+					recipeId: -1
 				}
 			};
 		},
