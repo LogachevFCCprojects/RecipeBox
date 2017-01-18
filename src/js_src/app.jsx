@@ -183,10 +183,15 @@
     }
 
     class EditorIngredients extends React.Component {
+        handlerAddIngredientClick = (e) => {
+            e.preventDefault();
+            console.log('-------- send '+'Ingredient.add');
+            window.ee.emit('Ingredient.add');
+        };
         render() {
             let {ingredients} = this.props;
             let ingredientsTemplate;
-            if (ingredients.length > 0) {
+            if (ingredients.length) {
                 ingredientsTemplate = ingredients.map(function(item, index) {
                     return (
                         <EditorSingleIngredient ingredient={item} ingredientId={index} key={index} />
@@ -198,10 +203,11 @@
 
             return (
                 <table className="allingredients">
-                <IngredientsHeading/>
-                <tbody className="allingredients__body">
-                {ingredientsTemplate}
-                </tbody>
+                    <IngredientsHeading/>
+                    <tbody className="allingredients__body">
+                        {ingredientsTemplate}
+                    </tbody>
+                    <button onClick={this.handlerAddIngredientClick} >+ Add one more Ingredient</button>
                 </table>
                 );
         }
@@ -222,14 +228,29 @@
                 instructions: '',
             }
         };
-
         state = this.props.recipe;
 
         componentDidMount() {
+            this.addEventListeners(this);
+            this.updateInputElements(this);
+        }
+        componentDidUpdate() {
+            this.updateInputElements(this);
+        }
+        addEventListeners() {
             let self = this;
             window.ee.addListener('Ingredient.remove', function(id) {
                 let nextList = self.state.ingredients.clone();
                 nextList.splice(id, 1);
+                self.setState({ingredients: nextList});
+            });
+            window.ee.addListener('Ingredient.add', function(id) {
+                let nextList = self.state.ingredients.clone();
+                nextList.push({
+                    name: '',
+                    amount: '',
+                    measure: '',
+                });
                 self.setState({ingredients: nextList});
             });
             window.ee.addListener('Ingredient.update', function(obj) {
@@ -241,21 +262,19 @@
                 };
                 self.setState({ingredients: nextList});
             });
-            this.updateInputElements.bind(this)();
         }
-
-        componentDidUpdate() {
-            this.updateInputElements.bind(this)();
-        }
-
         updateInputElements() {
             ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
             ReactDOM.findDOMNode(this.refs.instructions).value = this.state.instructions;
         }
 
         componentWillUnmount() {
+            this.removeEventListeners(this);
+        }
+        removeEventListeners() {
             window.ee.removeListener('Ingredient.remove');
             window.ee.removeListener('Ingredient.update');
+            window.ee.removeListener('Ingredient.add');
         }
 
         onFieldChange = (fieldName, e) => {
@@ -309,18 +328,18 @@
             }
         };
         componentDidMount() {
+            this.addEventListeners(this);
+        }
+        addEventListeners() {
             let self = this;
-
             window.ee.addListener('Recipe.remove', function(id) {
                 let nextList = self.state.recipeList.clone();
                 nextList.splice(id, 1);
                 self.setState({recipeList: nextList});
             });
-
             window.ee.addListener('Recipe.edit', function(id) {
                 self.setState({route: {current: 'edit', recipeId: id}});
             });
-
             window.ee.addListener('Recipe.publish', function(obj) {
                 let nextRecipeList = self.state.recipeList.clone();
                 nextRecipeList[obj.id] || (obj.id = nextRecipeList.push() - 1);
@@ -332,12 +351,15 @@
                 };                
                 self.setState({recipeList: nextRecipeList, route: {current: 'list'}});
             });
-
             window.ee.addListener('Recipe.cancel', function() {
                 self.setState({route: {current: 'list'}});
             });
         }
+
         componentWillUnmount() {
+            this.removeEventListeners(this);
+        }
+        removeEventListeners() {
             window.ee.removeListener('Recipe.remove');
             window.ee.removeListener('Recipe.edit');
             window.ee.removeListener('Recipe.publish');
