@@ -341,14 +341,23 @@
                 self.setState({route: {current: 'edit', recipeId: id}});
             });
             window.ee.addListener('Recipe.publish', function(obj) {
+                var d = new Date();
+                console.table(self.state.recipeList.clone());
                 let nextRecipeList = self.state.recipeList.clone();
                 nextRecipeList[obj.id] || (obj.id = nextRecipeList.push() - 1);
                 nextRecipeList[obj.id] = {
                     name: obj.name,
                     ingredients: obj.ingredients.clone(),
                     instructions: obj.instructions,
-                    date: 'today ZZZ',
-                };                
+                    date: d.toISOString(),
+                };     
+                console.table(nextRecipeList.clone());
+                nextRecipeList.sort(function (a, b) {
+                    let date1 = new Date(Date.parse(a.date));
+                    let date2 = new Date(Date.parse(b.date));
+                    return date2 - date1;
+                });
+                console.table(nextRecipeList.clone());           
                 self.setState({recipeList: nextRecipeList, route: {current: 'list'}});
             });
             window.ee.addListener('Recipe.cancel', function() {
@@ -367,6 +376,9 @@
         }
         render() {
             let {recipeList, route:{current, recipeId}} = this.state;
+
+            
+
             return (
                 <section>
                     <PageHeader />
