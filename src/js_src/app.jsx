@@ -63,6 +63,10 @@
     }
 
     class RecipeControls extends React.Component {
+        static defaultProps = {
+            recipeId: -1,
+        };
+
         state = this.props;
 
         handlerRemoveButtonClick = (e) => {
@@ -205,14 +209,18 @@
 
     class RecipeEditor extends React.Component {
         static defaultProps = {
-            id: -1,
-            name: '',
-            ingredients: [{
+            recipe: {
+                id: -1,
                 name: '',
-                amount: '',
-                measure: '',
-            }],
-            instructions: '',
+                ingredients: [
+                {
+                    name: '',
+                    amount: '',
+                    measure: '',
+                }
+                ],
+                instructions: '',
+            }
         };
 
         state = this.props.recipe;
