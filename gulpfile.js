@@ -28,7 +28,7 @@ gulp.task('cleanWatch', () =>
 gulp.task('jsx', () =>
     gulp.src('src/js_src/**/*.jsx')
     .pipe(babel({
-        presets: ['react']
+        presets: ['react', 'es2015', 'stage-2']
     }))
     .pipe(gulp.dest('src/js'))
     .pipe(browserSync.reload({stream: true})) 
@@ -88,7 +88,7 @@ gulp.task('build_clean', () =>
 gulp.task('build_jsx', () =>
     gulp.src('src/js_src/**/*.jsx')
     .pipe(babel({
-        presets: ['react']
+        presets: ['react', 'es2015', 'stage-2']
     }))
     .pipe(gulp.dest('build/js'))
 );
