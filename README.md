@@ -23,3 +23,26 @@ Execute `gulp watch` and browser will open.
 
 ## Building ##
 Execute `gulp build` and browser will open.
+
+## Structure ##
+
+```
+    window.ee
+    Array.prototype.clone
+    initialRecipeList
+    
+App
+    PageHeader
+    RecipeList (recipeList)
+        SingleRecipe (recipe, recipeId)
+            Ingredients (ingredients)
+                IngredientsHeading * ()
+                SingleIngredient (ingredient)
+            RecipeControls (recipeId)
+
+    RecipeEditor (recipe, recipeId)
+        EditorIngredients (ingredients)
+            IngredientsHeading * ()
+            EditorSingleIngredient (ingredient, ingredientId)
+* — common
+```
