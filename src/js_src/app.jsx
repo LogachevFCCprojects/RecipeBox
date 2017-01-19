@@ -119,7 +119,7 @@
     }
 
     class RecipeList extends React.Component {
-        handlerAddRecipeClick = (e) => {
+        onAddRecipeClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.edit', -1);
         };
@@ -139,7 +139,7 @@
 
             return (
                 <div className="recipe-list">
-                <button onClick={this.handlerAddRecipeClick} >+ Add new Recipe</button>
+                <button onClick={this.onAddRecipeClick} >+ Add new Recipe</button>
                 {RecipeListTemplate}
                 </div>
                 );
@@ -162,7 +162,7 @@
             ReactDOM.findDOMNode(this.refs.measure).value = this.props.ingredient.measure;
         }
 
-        onFieldChange = (e) => {            
+        onAnyFieldChange = (e) => {            
             let obj = {
                 id: this.props.ingredientId,
                 name: ReactDOM.findDOMNode(this.refs.name).value,
@@ -172,7 +172,7 @@
             window.ee.emit('Ingredient.update', obj);
         };
 
-        removeButtonClick = (id, e) => {
+        onRemoveClick = (id, e) => {
             e.preventDefault();
             window.ee.emit('Ingredient.remove', id);
         };
@@ -182,14 +182,14 @@
             return (
                 <tr className="ingredient">
                     <td className="ingredient__name" >
-                        <input type='text' onChange={this.onFieldChange} placeholder='Ingredient name' ref='name'/>
+                        <input type='text' onChange={this.onAnyFieldChange} placeholder='Ingredient name' ref='name'/>
                     </td>
                     <td className="ingredient__amount digits" >
-                        <input type='text' onChange={this.onFieldChange} placeholder='amount' ref='amount'/>
+                        <input type='text' onChange={this.onAnyFieldChange} placeholder='amount' ref='amount'/>
                     </td>
                     <td className="ingredient__measure" >
-                        <input type='text' onChange={this.onFieldChange} placeholder='measure' ref='measure'/>
-                        <button onClick={this.removeButtonClick.bind(this, ingredientId)} >X</button>
+                        <input type='text' onChange={this.onAnyFieldChange} placeholder='measure' ref='measure'/>
+                        <button onClick={this.onRemoveClick.bind(this,ingredientId)} >X</button>
                     </td>
                 </tr>
                 )
@@ -197,7 +197,7 @@
     }
 
     class EditorIngredients extends React.Component {
-        handlerAddIngredientClick = (e) => {
+        onAddIngredientClick = (e) => {
             e.preventDefault();
             window.ee.emit('Ingredient.add');
         };
@@ -220,7 +220,7 @@
                     <tbody className="allingredients__body">
                         {ingredientsTemplate}
                     </tbody>
-                    <button onClick={this.handlerAddIngredientClick} >+ Add one more Ingredient</button>
+                    <button onClick={this.onAddIngredientClick} >+ Add one more Ingredient</button>
                 </table>
                 );
         }
@@ -292,14 +292,14 @@
             window.ee.removeListener('Ingredient.add');
         }
 
-        onFieldChange = (e) => {
+        onAnyFieldChange = (e) => {
             this.setState({
                 name: ReactDOM.findDOMNode(this.refs.name).value, 
                 instructions: ReactDOM.findDOMNode(this.refs.instructions).value
             });
         };
 
-        saveButtonClick = (e) => {
+        onSaveClick = (e) => {
             e.preventDefault();
             let obj = {
                 id: this.props.recipeId,
@@ -310,25 +310,25 @@
             window.ee.emit('Recipe.publish', obj);
         };
 
-        cancelButtonClick(e) {
+        onCancelClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.cancel');
-        }
+        };
 
         render() {
             return (
                 <div className="recipe-editor">
                 <h1 className="recipe__name" >
-                <input type='text' onChange={this.onFieldChange} placeholder='Recipe name' ref='name'/>
+                <input type='text' onChange={this.onAnyFieldChange} placeholder='Recipe name' ref='name'/>
                 </h1>
 
                 <EditorIngredients ingredients={this.state.ingredients}/>
 
                 <h3>Instructions:</h3>
-                <textarea className='recipe__instructions' onChange={this.onFieldChange} placeholder='Recipe instructions' ref='instructions'></textarea>
+                <textarea className='recipe__instructions' onChange={this.onAnyFieldChange} placeholder='Recipe instructions' ref='instructions'></textarea>
                 <div className="recipe__controls">
-                <button onClick={this.saveButtonClick} >Save</button>
-                <button onClick={this.cancelButtonClick} >Cancel</button>
+                <button onClick={this.onSaveClick} >Save</button>
+                <button onClick={this.onCancelClick} >Cancel</button>
                 </div>
                 </div>
                 );
@@ -353,7 +353,6 @@
     	constructor(state) {
     		super(state);
             //maybe here read local storage 
-            //maybe here extend prototypes
 
             // sort array (mutes, don't use with React.Component.state)    
             this.arraySortByDateField(initialRecipeList);
@@ -423,7 +422,6 @@
 
         render() {
             let {recipeList, route:{current, recipeId}} = this.state;
-            console.log('again', this.state);
             return (
                 <section>
                     <PageHeader />
@@ -433,8 +431,6 @@
                 );
         }
     }
-
-
 
     ReactDOM.render(
         <App />,
