@@ -185,7 +185,6 @@
     class EditorIngredients extends React.Component {
         handlerAddIngredientClick = (e) => {
             e.preventDefault();
-            console.log('-------- send '+'Ingredient.add');
             window.ee.emit('Ingredient.add');
         };
         render() {
@@ -238,29 +237,31 @@
             this.updateInputElements(this);
         }
         addEventListeners() {
-            let self = this;
-            window.ee.addListener('Ingredient.remove', function(id) {
-                let nextList = self.state.ingredients.clone();
+        	// event
+            window.ee.addListener('Ingredient.remove', (id) => {
+                let nextList = this.state.ingredients.clone();
                 nextList.splice(id, 1);
-                self.setState({ingredients: nextList});
+                this.setState({ingredients: nextList});
             });
-            window.ee.addListener('Ingredient.add', function(id) {
-                let nextList = self.state.ingredients.clone();
+            // event
+            window.ee.addListener('Ingredient.add', (id) => {
+                let nextList = this.state.ingredients.clone();
                 nextList.push({
                     name: '',
                     amount: '',
                     measure: '',
                 });
-                self.setState({ingredients: nextList});
+                this.setState({ingredients: nextList});
             });
-            window.ee.addListener('Ingredient.update', function(obj) {
-                let nextList = self.state.ingredients.clone();
+            // event
+            window.ee.addListener('Ingredient.update', (obj) => {
+                let nextList = this.state.ingredients.clone();
                 nextList[obj.id] = {
                     name: obj.name,
                     amount: obj.amount,
                     measure: obj.measure,
                 };
-                self.setState({ingredients: nextList});
+                this.setState({ingredients: nextList});
             });
         }
         updateInputElements() {
@@ -277,7 +278,7 @@
             window.ee.removeListener('Ingredient.add');
         }
 
-        onFieldChange = (fieldName, e) => {
+        onFieldChange = (e) => {
             this.setState({
                 name: ReactDOM.findDOMNode(this.refs.name).value, 
                 instructions: ReactDOM.findDOMNode(this.refs.instructions).value
@@ -331,37 +332,38 @@
             this.addEventListeners(this);
         }
         addEventListeners() {
-            let self = this;
-            window.ee.addListener('Recipe.remove', function(id) {
-                let nextList = self.state.recipeList.clone();
+        	// event
+            window.ee.addListener('Recipe.remove', (id) => {
+                let nextList = this.state.recipeList.clone();
                 nextList.splice(id, 1);
-                self.setState({recipeList: nextList});
+                this.setState({recipeList: nextList});
             });
-            window.ee.addListener('Recipe.edit', function(id) {
-                self.setState({route: {current: 'edit', recipeId: id}});
+            // event
+            window.ee.addListener('Recipe.edit', (id) => {
+                this.setState({route: {current: 'edit', recipeId: id}});
             });
-            window.ee.addListener('Recipe.publish', function(obj) {
-                var d = new Date();
-                console.table(self.state.recipeList.clone());
-                let nextRecipeList = self.state.recipeList.clone();
-                nextRecipeList[obj.id] || (obj.id = nextRecipeList.push() - 1);
-                nextRecipeList[obj.id] = {
+            // event
+            window.ee.addListener('Recipe.publish', (obj) => {
+                let targetIndex = obj.id,
+                	d = new Date(),
+                	nextRecipeList = this.state.recipeList.clone();
+                nextRecipeList[targetIndex] || (targetIndex = nextRecipeList.push());
+                nextRecipeList[targetIndex] = {
                     name: obj.name,
                     ingredients: obj.ingredients.clone(),
                     instructions: obj.instructions,
                     date: d.toISOString(),
                 };     
-                console.table(nextRecipeList.clone());
                 nextRecipeList.sort(function (a, b) {
                     let date1 = new Date(Date.parse(a.date));
                     let date2 = new Date(Date.parse(b.date));
                     return date2 - date1;
-                });
-                console.table(nextRecipeList.clone());           
-                self.setState({recipeList: nextRecipeList, route: {current: 'list'}});
+                });         
+                this.setState({recipeList: nextRecipeList, route: {current: 'list'}});
             });
-            window.ee.addListener('Recipe.cancel', function() {
-                self.setState({route: {current: 'list'}});
+            // event
+            window.ee.addListener('Recipe.cancel', () => {
+                this.setState({route: {current: 'list'}});
             });
         }
 
@@ -407,5 +409,26 @@
         <App />,
         document.getElementById('root')
         );
+
+ 				(() => {
+            		console.groupCollapsed('ARRAY TEST');
+	            	let arr = ['x', 'y', 'z'];
+					console.log(arr); 
+					console.log ('arr.push(abc) ', arr.push('abc'));
+					console.log ('arr.length', arr.length);
+					console.log ('arr.indexOf', arr.indexOf('abc'));
+					console.groupEnd();
+            	})();
+            	(() => {
+            		console.groupCollapsed('ARRAY TEST');
+
+	            	let arr = [{content: 'x'}, {content: 'y'}, {content: 'z'}];
+	            	arr = arr.clone();
+	            	console.table(arr); 
+					console.log ('arr.push(abc) ', arr.push('abc'));
+					console.log ('arr.length', arr.length);
+					console.log ('arr.indexOf', arr.indexOf('abc'));
+					console.groupEnd();
+            	})();
 
 }());
