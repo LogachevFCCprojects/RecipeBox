@@ -104,6 +104,16 @@
     }
 
     class SingleRecipe extends React.Component {
+    	formattedDate(dateIsoString) {
+    		let tempDate = new Date(Date.parse(dateIsoString));
+    		let dd = tempDate.getDate();
+    		(dd < 10) && (dd = '0' + dd);
+			let mm = tempDate.getMonth() + 1;
+			(mm < 10) && (mm = '0' + mm);
+			let yy = tempDate.getFullYear() % 100;
+			(yy < 10) && (yy = '0' + yy);
+			return dd +'.'+ mm +'.'+ yy;
+    	}
         render() {
             let {recipe: {name, ingredients, instructions, date}, recipeId} = this.props;
             return (
@@ -111,7 +121,7 @@
                     <h1 className="recipe__name" >{name}</h1>
                     <Ingredients ingredients={ingredients} />
                     <Instructions instructions={instructions} />
-                    <p className="recipe__date" >Date: {date}</p>
+                    <p className="recipe__date" >{this.formattedDate(date)}</p>
                     <RecipeControls recipeId={recipeId} />
                 </div>
                 );
@@ -241,6 +251,7 @@
                 instructions: '',
             }
         };
+
         state = this.props.recipe;
 
         componentDidMount() {
@@ -250,6 +261,10 @@
         componentDidUpdate() {
             this.updateInputElements(this);
         }
+        componentWillUnmount() {
+            this.removeEventListeners(this);
+        }
+
         addEventListeners() {
         	// event
             window.ee.addListener('Ingredient.remove', (id) => {
@@ -278,18 +293,14 @@
                 this.setState({ingredients: nextList});
             });
         }
-        updateInputElements() {
-            ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
-            ReactDOM.findDOMNode(this.refs.instructions).value = this.state.instructions;
-        }
-
-        componentWillUnmount() {
-            this.removeEventListeners(this);
-        }
         removeEventListeners() {
             window.ee.removeListener('Ingredient.remove');
             window.ee.removeListener('Ingredient.update');
             window.ee.removeListener('Ingredient.add');
+        }
+        updateInputElements() {
+            ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
+            ReactDOM.findDOMNode(this.refs.instructions).value = this.state.instructions;
         }
 
         onAnyFieldChange = (e) => {
@@ -298,7 +309,6 @@
                 instructions: ReactDOM.findDOMNode(this.refs.instructions).value
             });
         };
-
         onSaveClick = (e) => {
             e.preventDefault();
             let obj = {
@@ -309,7 +319,6 @@
             };
             window.ee.emit('Recipe.publish', obj);
         };
-
         onCancelClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.cancel');
@@ -363,9 +372,14 @@
 	            }
 	        };
         }
+
         componentDidMount() {
             this.addEventListeners(this);
         }
+        componentWillUnmount() {
+            this.removeEventListeners(this);
+        }
+
         addEventListeners() {
         	// event
             window.ee.addListener('Recipe.remove', (id) => {
@@ -400,7 +414,12 @@
                 this.setState({route: {current: 'list'}});
             });
         }
-
+        removeEventListeners() {
+            window.ee.removeListener('Recipe.remove');
+            window.ee.removeListener('Recipe.edit');
+            window.ee.removeListener('Recipe.publish');
+            window.ee.removeListener('Recipe.cancel');
+        }
         arraySortByDateField (arrayToSort) {
         	// mutes, don't use with React.Component.state
         	return arrayToSort.sort((a, b) => {
@@ -408,16 +427,6 @@
                 let date2 = new Date(Date.parse(b.date));
                 return date2 - date1;
             });  
-        }
-
-        componentWillUnmount() {
-            this.removeEventListeners(this);
-        }
-        removeEventListeners() {
-            window.ee.removeListener('Recipe.remove');
-            window.ee.removeListener('Recipe.edit');
-            window.ee.removeListener('Recipe.publish');
-            window.ee.removeListener('Recipe.cancel');
         }
 
         render() {

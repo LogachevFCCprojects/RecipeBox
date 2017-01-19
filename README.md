@@ -36,6 +36,7 @@ App
     RecipeList (recipeList)
         SingleRecipe (recipe, recipeId)
             Ingredients (ingredients)
+            Instructions (instructions)
                 IngredientsHeading * ()
                 SingleIngredient (ingredient)
             RecipeControls (recipeId)
