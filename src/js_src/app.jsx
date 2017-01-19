@@ -69,12 +69,12 @@
 
         state = this.props;
 
-        handlerRemoveButtonClick = (e) => {
+        onRemoveClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.remove', this.state.recipeId);
         };
 
-        handlerEditButtonClick = (e) => {
+        onEditClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.edit', this.state.recipeId);
         };
@@ -82,8 +82,22 @@
         render() {
             return (
                 <div className="recipe__controls">
-                <button onClick={this.handlerRemoveButtonClick} >Remove</button>
-                <button onClick={this.handlerEditButtonClick} >Edit</button>
+                <button onClick={this.onRemoveClick} >Remove</button>
+                <button onClick={this.onEditClick} >Edit</button>
+                </div>
+                );
+        }
+    }
+
+    class Instructions extends React.Component {
+        render() {
+            let instructionsTemplate;
+            let instructionsArray = this.props.instructions.split('\n');
+            instructionsTemplate = instructionsArray.map((item, index) => <p>{item}</p>)
+            return (
+                <div className="recipe__instructions">
+                <h3>Instructions: </h3>
+                    {instructionsTemplate}
                 </div>
                 );
         }
@@ -95,8 +109,8 @@
             return (
                 <div className="recipe" >
                     <h1 className="recipe__name" >{name}</h1>
-                    <Ingredients ingredients={ingredients}/>
-                    <p className="recipe__instructions" >Instructions: {instructions}</p>
+                    <Ingredients ingredients={ingredients} />
+                    <Instructions instructions={instructions} />
                     <p className="recipe__date" >Date: {date}</p>
                     <RecipeControls recipeId={recipeId} />
                 </div>
@@ -321,13 +335,35 @@
         }
     }
 
+    class PageHeader extends React.Component{
+        render() {
+            return (
+                <div className="page__title">
+                    <h1>Recipe Box</h1>
+                    <h2>Don't worry, all your recipes will be stored locally.</h2>
+
+                    <em>Project by <a href="http://vladimirlogachev.ru" target="_blank" rel="noopener noreferrer">Vladimir Logachev</a>. </em>
+                    <em>Made with React and SASS. <a href="https://github.com/LogachevFCCprojects/RecipeBox" target="_blank" rel="noopener noreferrer">Github</a></em>
+                </div>
+                )
+        }
+    }
+
     class App extends React.Component {
-        state = {
-            recipeList: initialRecipeList,
-            route: {
-                current: 'list'
-            }
-        };
+    	constructor(state) {
+    		super(state);
+            //maybe here read local storage 
+            //maybe here extend prototypes
+
+            // sort array (mutes, don't use with React.Component.state)    
+            this.arraySortByDateField(initialRecipeList);
+            this.state = {
+	            recipeList: initialRecipeList,
+	            route: {
+	                current: 'list'
+	            }
+	        };
+        }
         componentDidMount() {
             this.addEventListeners(this);
         }
@@ -347,6 +383,7 @@
                 let targetIndex = obj.id,
                 	d = new Date(),
                 	nextRecipeList = this.state.recipeList.clone();
+                // check index and edit array item
                 nextRecipeList[targetIndex] || (targetIndex = nextRecipeList.push());
                 nextRecipeList[targetIndex] = {
                     name: obj.name,
@@ -354,17 +391,24 @@
                     instructions: obj.instructions,
                     date: d.toISOString(),
                 };     
-                nextRecipeList.sort(function (a, b) {
-                    let date1 = new Date(Date.parse(a.date));
-                    let date2 = new Date(Date.parse(b.date));
-                    return date2 - date1;
-                });         
+                // sort array (mutes, don't use with React.Component.state)    
+                this.arraySortByDateField(nextRecipeList);
+                // flush
                 this.setState({recipeList: nextRecipeList, route: {current: 'list'}});
             });
             // event
             window.ee.addListener('Recipe.cancel', () => {
                 this.setState({route: {current: 'list'}});
             });
+        }
+
+        arraySortByDateField (arrayToSort) {
+        	// mutes, don't use with React.Component.state
+        	return arrayToSort.sort((a, b) => {
+                let date1 = new Date(Date.parse(a.date));
+                let date2 = new Date(Date.parse(b.date));
+                return date2 - date1;
+            });  
         }
 
         componentWillUnmount() {
@@ -376,11 +420,10 @@
             window.ee.removeListener('Recipe.publish');
             window.ee.removeListener('Recipe.cancel');
         }
+
         render() {
             let {recipeList, route:{current, recipeId}} = this.state;
-
-            
-
+            console.log('again', this.state);
             return (
                 <section>
                     <PageHeader />
@@ -391,44 +434,10 @@
         }
     }
 
-    class PageHeader extends React.Component{
-        render() {
-            return (
-                <div className="page__title">
-                    <h1>Recipe Box</h1>
-                    <h2>Don't worry, all your recipes will be stored locally.</h2>
 
-                    <em>Project by <a href="http://vladimirlogachev.ru" target="_blank" rel="noopener noreferrer">Vladimir Logachev</a>. </em>
-                    <em>Made with React and SASS. <a href="https://github.com/LogachevFCCprojects/RecipeBox" target="_blank" rel="noopener noreferrer">Github</a></em>
-                </div>
-                )
-        }
-    }
 
     ReactDOM.render(
         <App />,
         document.getElementById('root')
         );
-
- 				(() => {
-            		console.groupCollapsed('ARRAY TEST');
-	            	let arr = ['x', 'y', 'z'];
-					console.log(arr); 
-					console.log ('arr.push(abc) ', arr.push('abc'));
-					console.log ('arr.length', arr.length);
-					console.log ('arr.indexOf', arr.indexOf('abc'));
-					console.groupEnd();
-            	})();
-            	(() => {
-            		console.groupCollapsed('ARRAY TEST');
-
-	            	let arr = [{content: 'x'}, {content: 'y'}, {content: 'z'}];
-	            	arr = arr.clone();
-	            	console.table(arr); 
-					console.log ('arr.push(abc) ', arr.push('abc'));
-					console.log ('arr.length', arr.length);
-					console.log ('arr.indexOf', arr.indexOf('abc'));
-					console.groupEnd();
-            	})();
-
 }());
