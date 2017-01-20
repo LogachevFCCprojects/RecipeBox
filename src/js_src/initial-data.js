@@ -1,4 +1,4 @@
-var initialRecipeList = [
+let initialRecipeList = [
 {
 	name: 'Lemon drizzle cake',
 	ingredients: [

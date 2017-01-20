@@ -1,5 +1,4 @@
 (function () {
-    'use strict';
 
     window.ee = new EventEmitter();
 
@@ -12,6 +11,104 @@
         }
         return arr;
     };
+
+    class EditorSingleIngredient extends React.Component {
+    	static defaultProps = {
+            possibleMeasures: ['g', 'ml', 'pcs']
+        };
+        state = this.props;
+        componentDidMount() {
+            this.updateInputElements(this);
+        }
+
+        componentDidUpdate() {
+            this.updateInputElements(this);
+        }
+
+        updateInputElements() {
+            ReactDOM.findDOMNode(this.refs.name).value = this.state.ingredient.name;
+            ReactDOM.findDOMNode(this.refs.amount).value = this.state.ingredient.amount;
+            ReactDOM.findDOMNode(this.refs.measure).value = this.state.ingredient.measure; //изменить для поддержки radio
+        }
+
+        checkAndSendEvent(obj) {
+            window.ee.emit('Ingredient.update', obj);
+        }
+
+        onNameChange = (e) => {            
+            let nextObj = {
+                id: this.props.ingredientId,
+                name: ReactDOM.findDOMNode(this.refs.name).value,
+                amount: ReactDOM.findDOMNode(this.refs.amount).value,
+                measure: ReactDOM.findDOMNode(this.refs.measure).value,
+            };
+            console.log(e.currentTarget.value);
+            //this.checkAndSendEvent(nextObj);
+            this.setState({ingredient: nextObj})
+        };
+
+        onAmountChange = (e) => {            
+            let obj = {
+                id: this.props.ingredientId,
+                name: ReactDOM.findDOMNode(this.refs.name).value,
+                amount: ReactDOM.findDOMNode(this.refs.amount).value,
+                measure: ReactDOM.findDOMNode(this.refs.measure).value,
+            };
+            console.log(e.currentTarget.value);
+            this.checkAndSendEvent(obj);
+        };
+
+        onMeasureChange = (e) => {            
+            let obj = {
+                id: this.props.ingredientId,
+                name: ReactDOM.findDOMNode(this.refs.name).value,
+                amount: ReactDOM.findDOMNode(this.refs.amount).value,
+                measure: ReactDOM.findDOMNode(this.refs.measure).value,
+            };
+            console.log(e.currentTarget.value);
+            this.checkAndSendEvent(obj);
+        };
+
+        onRemoveClick = (id, e) => {
+            e.preventDefault();
+            window.ee.emit('Ingredient.remove', id);
+        };
+
+        render() {
+        	console.log('•'); //notify render begins
+            let {ingredient: {name, amount, measure}, ingredientId, possibleMeasures} = this.state;
+            let measuresTemplate = possibleMeasures.map((item) => {
+            	return(
+            		<span className="inline-radio">
+	            		<input type="radio" 
+	            			name="measure" 
+	            			value={item} 
+	            			checked={measure === item} 
+		                    onChange={console.log.bind(this, item)} 
+		                    />
+	            		{item}
+            		</span>
+            		);
+            });
+            return (
+                <tr className="ingredient">
+                    <td className="ingredient__name" >
+                        <input type='text' onChange={this.onNameChange} placeholder='Ingredient name' ref='name'/>
+                    </td>
+                    <td className="ingredient__amount digits" >
+                        <input type='text' onChange={this.onAmountChange} placeholder='amount' ref='amount'/>
+                    </td>
+                    <td className="ingredient__measure" >
+                    	{measuresTemplate}
+                        <input type='text' onChange={this.onMeasureChange} placeholder='measure' ref='measure'/>
+                        <button onClick={this.onRemoveClick.bind(this,ingredientId)} >X</button>
+                    </td>
+                </tr>
+                )
+        }
+    }
+
+////////////////////////
 
     class SingleIngredient extends React.Component {
         render() {
@@ -157,54 +254,7 @@
     }
 
 
-    class EditorSingleIngredient extends React.Component {
-        componentDidMount() {
-            this.updateInputElements(this);
-        }
 
-        componentDidUpdate() {
-            this.updateInputElements(this);
-        }
-
-        updateInputElements() {
-            ReactDOM.findDOMNode(this.refs.name).value = this.props.ingredient.name;
-            ReactDOM.findDOMNode(this.refs.amount).value = this.props.ingredient.amount;
-            ReactDOM.findDOMNode(this.refs.measure).value = this.props.ingredient.measure;
-        }
-
-        onAnyFieldChange = (e) => {            
-            let obj = {
-                id: this.props.ingredientId,
-                name: ReactDOM.findDOMNode(this.refs.name).value,
-                amount: ReactDOM.findDOMNode(this.refs.amount).value,
-                measure: ReactDOM.findDOMNode(this.refs.measure).value,
-            };
-            window.ee.emit('Ingredient.update', obj);
-        };
-
-        onRemoveClick = (id, e) => {
-            e.preventDefault();
-            window.ee.emit('Ingredient.remove', id);
-        };
-
-        render() {
-            let {ingredient: {name, amount, measure}, ingredientId} = this.props;
-            return (
-                <tr className="ingredient">
-                    <td className="ingredient__name" >
-                        <input type='text' onChange={this.onAnyFieldChange} placeholder='Ingredient name' ref='name'/>
-                    </td>
-                    <td className="ingredient__amount digits" >
-                        <input type='text' onChange={this.onAnyFieldChange} placeholder='amount' ref='amount'/>
-                    </td>
-                    <td className="ingredient__measure" >
-                        <input type='text' onChange={this.onAnyFieldChange} placeholder='measure' ref='measure'/>
-                        <button onClick={this.onRemoveClick.bind(this,ingredientId)} >X</button>
-                    </td>
-                </tr>
-                )
-        }
-    }
 
     class EditorIngredients extends React.Component {
         onAddIngredientClick = (e) => {
