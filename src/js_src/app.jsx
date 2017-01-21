@@ -26,47 +26,63 @@
         }
 
         updateInputElements() {
-            ReactDOM.findDOMNode(this.refs.name).value = this.state.ingredient.name;
-            ReactDOM.findDOMNode(this.refs.amount).value = this.state.ingredient.amount;
-            ReactDOM.findDOMNode(this.refs.measure).value = this.state.ingredient.measure; //изменить для поддержки radio
+            ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
+            ReactDOM.findDOMNode(this.refs.amount).value = this.state.amount;
         }
 
-        checkAndSendEvent(obj) {
-            window.ee.emit('Ingredient.update', obj);
+        isIngredientValid(obj) {
+        	console.info(obj);
+            let result = true;
+            if (obj.name === '' || obj.name === ' ' || obj.name === undefined) {
+            	console.log('-- name')
+            	result = false;
+            }
+
+            obj.amount = obj.amount.replace(/[^\d]/g, '').replace(/^0*/g, '');  //иногда вылетает is not a function
+            if (obj.amount === '') {
+            	console.log('-- amount')
+            	result = false;
+            }
+
+            if (this.state.possibleMeasures.indexOf(obj.measure) === -1) {
+            	result = false;
+            	console.log('-- measure')
+            }
+            return result;
+        }
+        submitFieldValue(fieldName, fieldValue) {
+            // prepare an object before changes // looks like anti-pattern...
+            let nextObj = {
+                id: this.state.id,
+                name: this.state.name,
+                amount: this.state.amount,
+                measure: this.state.measure,
+            };
+
+            // actually we update field Value here
+            nextObj[fieldName]=fieldValue; 
+			
+            // CHANGE State anyway
+            this.setState({[fieldName]: fieldValue});
+
+            //why look for an object if we can lookup state?
+            if (this.isIngredientValid(nextObj)) {
+            	window.ee.emit('Ingredient.update', nextObj);
+            }
         }
 
         onNameChange = (e) => {            
-            let nextObj = {
-                id: this.props.ingredientId,
-                name: ReactDOM.findDOMNode(this.refs.name).value,
-                amount: ReactDOM.findDOMNode(this.refs.amount).value,
-                measure: ReactDOM.findDOMNode(this.refs.measure).value,
-            };
-            console.log(e.currentTarget.value);
-            //this.checkAndSendEvent(nextObj);
-            this.setState({ingredient: nextObj})
+        	this.submitFieldValue('name', e.currentTarget.value);
         };
 
         onAmountChange = (e) => {            
-            let obj = {
-                id: this.props.ingredientId,
-                name: ReactDOM.findDOMNode(this.refs.name).value,
-                amount: ReactDOM.findDOMNode(this.refs.amount).value,
-                measure: ReactDOM.findDOMNode(this.refs.measure).value,
-            };
-            console.log(e.currentTarget.value);
-            this.checkAndSendEvent(obj);
+        	this.submitFieldValue('amount', e.currentTarget.value);
         };
 
-        onMeasureChange = (e) => {            
-            let obj = {
-                id: this.props.ingredientId,
-                name: ReactDOM.findDOMNode(this.refs.name).value,
-                amount: ReactDOM.findDOMNode(this.refs.amount).value,
-                measure: ReactDOM.findDOMNode(this.refs.measure).value,
-            };
-            console.log(e.currentTarget.value);
-            this.checkAndSendEvent(obj);
+        onMeasureChange = (e) => {   
+        	console.log('!!'); 
+        	console.log('measure', e.currentTarget.value);
+        	this.submitFieldValue('measure', e.currentTarget.value);
         };
 
         onRemoveClick = (id, e) => {
@@ -75,33 +91,39 @@
         };
 
         render() {
-        	console.log('•'); //notify render begins
-            let {ingredient: {name, amount, measure}, ingredientId, possibleMeasures} = this.state;
+            let {id, name, amount, measure, possibleMeasures} = this.state;
             let measuresTemplate = possibleMeasures.map((item) => {
             	return(
-            		<span className="inline-radio">
-	            		<input type="radio" 
+            		<label className="inline-radio">
+	            		<input type="checkbox" 
 	            			name="measure" 
 	            			value={item} 
 	            			checked={measure === item} 
-		                    onChange={console.log.bind(this, item)} 
+		                    onChange={this.onMeasureChange} 
 		                    />
-	            		{item}
-            		</span>
+		                <span><em>{item}</em></span>
+            		</label>
             		);
             });
             return (
                 <tr className="ingredient">
                     <td className="ingredient__name" >
-                        <input type='text' onChange={this.onNameChange} placeholder='Ingredient name' ref='name'/>
+                        <input type='text' 
+                        	   onChange={this.onNameChange}
+                        	   placeholder='Ingredient name' 
+                        	   ref='name'/>
                     </td>
-                    <td className="ingredient__amount digits" >
-                        <input type='text' onChange={this.onAmountChange} placeholder='amount' ref='amount'/>
+                    <td className="ingredient__amount" >
+                        <input type='text' 
+                               onChange={this.onAmountChange} 
+                               placeholder='amount' 
+                               ref='amount'/>
                     </td>
                     <td className="ingredient__measure" >
-                    	{measuresTemplate}
-                        <input type='text' onChange={this.onMeasureChange} placeholder='measure' ref='measure'/>
-                        <button onClick={this.onRemoveClick.bind(this,ingredientId)} >X</button>
+	                    <fieldset>
+	                    	{measuresTemplate}
+	                    </fieldset>
+                        <button onClick={this.onRemoveClick.bind(this,id)} className="grey">X</button>
                     </td>
                 </tr>
                 )
@@ -143,7 +165,8 @@
             let ingredients = this.props.ingredients;
 
             if (ingredients.length) {
-                ingredientsTemplate = ingredients.map((item, index) => <SingleIngredient ingredient={item} key={index} />)
+                ingredientsTemplate = ingredients.map((item, index) => 
+                	<SingleIngredient ingredient={item} key={index} />)
             } else {
                 ingredientsTemplate = <p>No ingredients in this recipe</p>
             }
@@ -179,8 +202,8 @@
         render() {
             return (
                 <div className="recipe__controls">
-                <button onClick={this.onRemoveClick} >Remove</button>
-                <button onClick={this.onEditClick} >Edit</button>
+                <button onClick={this.onRemoveClick} className="grey">X</button>
+                <button onClick={this.onEditClick} className="blue">Edit</button>
                 </div>
                 );
         }
@@ -246,7 +269,7 @@
 
             return (
                 <div className="recipe-list">
-                <button onClick={this.onAddRecipeClick} >+ Add new Recipe</button>
+                <button onClick={this.onAddRecipeClick} className="green">+ Add new Recipe</button>
                 {RecipeListTemplate}
                 </div>
                 );
@@ -267,7 +290,7 @@
             if (ingredients.length) {
                 ingredientsTemplate = ingredients.map(function(item, index) {
                     return (
-                        <EditorSingleIngredient ingredient={item} ingredientId={index} key={index} />
+                        <EditorSingleIngredient {...item} id={index} key={index} />
                         )
                 })
             } else {
@@ -276,11 +299,11 @@
 
             return (
                 <table className="allingredients">
-                    <IngredientsHeading/>
+                    {/*<IngredientsHeading/>*/}
                     <tbody className="allingredients__body">
                         {ingredientsTemplate}
                     </tbody>
-                    <button onClick={this.onAddIngredientClick} >+ Add one more Ingredient</button>
+                    <button onClick={this.onAddIngredientClick} className="green">+ Add one more Ingredient</button>
                 </table>
                 );
         }
@@ -386,8 +409,8 @@
                 <h3>Instructions:</h3>
                 <textarea className='recipe__instructions' onChange={this.onAnyFieldChange} placeholder='Recipe instructions' ref='instructions'></textarea>
                 <div className="recipe__controls">
-                <button onClick={this.onSaveClick} >Save</button>
-                <button onClick={this.onCancelClick} >Cancel</button>
+                <button onClick={this.onSaveClick} className="green" >Save</button>
+                <button onClick={this.onCancelClick} className="grey" >Cancel</button>
                 </div>
                 </div>
                 );

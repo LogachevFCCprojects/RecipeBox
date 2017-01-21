@@ -1,10 +1,23 @@
 $highlight: #FF9800
 $link: #00bcd4
 
+$red: #D84315
+$green: #66BB6A
+$grey: #B0BEC5
+$blue: #00BCD4
+
+$white: #FAFAFA
+$dark: #212121
+$light: #F5F5F5
+$page-background: #FAFAFA
+
+$border-radius: 3px
+$universal-height: 30px
+
 %title-font
   font-family: 'Fira Sans Extra Condensed', sans-serif
   font-weight: 700
-  color: #000
+  color: $dark
   font-size: 1.5em
   text-decoration: none
   border-bottom: none
@@ -20,18 +33,18 @@ $link: #00bcd4
 
 %regular-font
   font-family: 'Open Sans', sans-serif
-  color: #333
+  color: $dark
   font-weight: 400
   font-size: 16px
   text-decoration: none
   border-bottom: none
 
 #root
-  max-width: 1000px
+  max-width: 700px
   margin: 0 auto
 
 html, body 
-  background-color: #FFF
+  background-color: $page-background
   line-height: 1.1
   @extend %regular-font
 
