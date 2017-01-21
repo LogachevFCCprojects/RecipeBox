@@ -20,34 +20,20 @@
         componentDidMount() {
             this.updateInputElements(this);
         }
-
         componentDidUpdate() {
             this.updateInputElements(this);
         }
-
         updateInputElements() {
             ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
             ReactDOM.findDOMNode(this.refs.amount).value = this.state.amount;
         }
-
         isIngredientValid(obj) {
-        	console.info(obj);
+        	console.info('проверяем ингредиент',obj);
             let result = true;
-            if (obj.name === '' || obj.name === ' ' || obj.name === undefined) {
-            	console.log('-- name')
-            	result = false;
-            }
-
+            if (obj.name === '' || obj.name === ' ' || obj.name === undefined) result = false;
             obj.amount = obj.amount.replace(/[^\d]/g, '').replace(/^0*/g, '');  //иногда вылетает is not a function
-            if (obj.amount === '') {
-            	console.log('-- amount')
-            	result = false;
-            }
-
-            if (this.state.possibleMeasures.indexOf(obj.measure) === -1) {
-            	result = false;
-            	console.log('-- measure')
-            }
+            if (obj.amount === '') result = false;
+            if (this.state.possibleMeasures.indexOf(obj.measure) === -1) result = false;
             return result;
         }
         submitFieldValue(fieldName, fieldValue) {
@@ -66,32 +52,37 @@
             this.setState({[fieldName]: fieldValue});
 
             //why look for an object if we can lookup state?
-            if (this.isIngredientValid(nextObj)) {
+            //if (this.isIngredientValid(nextObj)) {
             	window.ee.emit('Ingredient.update', nextObj);
-            }
+            //}
         }
 
         onNameChange = (e) => {            
         	this.submitFieldValue('name', e.currentTarget.value);
-        };
+        }
 
         onAmountChange = (e) => {            
         	this.submitFieldValue('amount', e.currentTarget.value);
-        };
+        }
 
         onMeasureChange = (e) => {   
-        	console.log('!!'); 
-        	console.log('measure', e.currentTarget.value);
         	this.submitFieldValue('measure', e.currentTarget.value);
-        };
+        }
 
         onRemoveClick = (id, e) => {
             e.preventDefault();
             window.ee.emit('Ingredient.remove', id);
-        };
+        }
 
         render() {
             let {id, name, amount, measure, possibleMeasures} = this.state;
+            console.group(this.props.id);
+            console.log(this.props);
+            console.log(this.props.id, this.state.id);
+            console.log(this.props.name, this.state.name);
+            console.log(this.props.amount, this.state.amount);
+            console.log(this.props.measure, this.state.measure);
+            console.groupEnd();
             let measuresTemplate = possibleMeasures.map((item) => {
             	return(
             		<label className="inline-radio">
@@ -192,12 +183,12 @@
         onRemoveClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.remove', this.state.recipeId);
-        };
+        }
 
         onEditClick = (e) => {
             e.preventDefault();
             window.ee.emit('Recipe.edit', this.state.recipeId);
-        };
+        }
 
         render() {
             return (
@@ -299,7 +290,7 @@
 
             return (
                 <table className="allingredients">
-                    {/*<IngredientsHeading/>*/}
+                    <IngredientsHeading/>
                     <tbody className="allingredients__body">
                         {ingredientsTemplate}
                     </tbody>
@@ -341,8 +332,10 @@
         addEventListeners() {
         	// event
             window.ee.addListener('Ingredient.remove', (id) => {
+            	console.log('remove', id);
                 let nextList = this.state.ingredients.clone();
                 nextList.splice(id, 1);
+                console.log(nextList);
                 this.setState({ingredients: nextList});
             });
             // event
@@ -456,6 +449,7 @@
         addEventListeners() {
         	// event
             window.ee.addListener('Recipe.remove', (id) => {
+            	console.log('Удаляем рецепт', id);
                 let nextList = this.state.recipeList.clone();
                 nextList.splice(id, 1);
                 this.setState({recipeList: nextList});
@@ -519,3 +513,9 @@
         document.getElementById('root')
         );
 }());
+
+// Save data to the current local store
+//localStorage.setItem("username", "John");
+
+// Access some stored data
+// console.log( "username = " + localStorage.getItem("username"));
