@@ -202,8 +202,8 @@
         render() {
             return (
                 <div className="recipe__controls">
-                <button onClick={this.onRemoveClick} className="grey">X</button>
                 <button onClick={this.onEditClick} className="blue">Edit</button>
+                <button onClick={this.onRemoveClick} className="grey float-right">X</button>
                 </div>
                 );
         }
@@ -409,8 +409,8 @@
                 <h3>Instructions:</h3>
                 <textarea className='recipe__instructions' onChange={this.onAnyFieldChange} placeholder='Recipe instructions' ref='instructions'></textarea>
                 <div className="recipe__controls">
-                <button onClick={this.onSaveClick} className="green" >Save</button>
-                <button onClick={this.onCancelClick} className="grey" >Cancel</button>
+                <button onClick={this.onSaveClick} className="blue" >Save</button>
+                <button onClick={this.onCancelClick} className="grey float-right" >Cancel</button>
                 </div>
                 </div>
                 );

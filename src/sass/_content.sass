@@ -1,6 +1,9 @@
 .digits
   text-align: right
 
+.float-right
+  float: right
+
 button.red
   background-color: $red
 button.green
@@ -69,8 +72,7 @@ button.blue
   border-radius: $border-radius
   padding: 1em
 
-.recipe__name
-  @extend %title-font
+
 
 .recipe__instructions
 
@@ -87,12 +89,13 @@ button.blue
 .recipe-editor
 
   td 
-    padding:
-      top: 5px
-      bottom: 5px
     margin-right: 1em
+    padding:
+      top: 0
+      bottom: 0
 
   td fieldset, td button, td input 
+    
     height: 30px
     vertical-align: middle
 
@@ -115,10 +118,17 @@ input[type="text"], textarea
   border: 1px solid $light
   height: $universal-height
   padding: .35em
+  margin-top: 0
+  margin-bottom: 0
+
+.recipe__name
+  @extend %title-font
 
 .recipe__name input
-  @extend %title-font
   height: $universal-height * 1.5
+  font-family: 'Fira Sans Extra Condensed', sans-serif
+  font-weight: 700
+  font-size: 1.5em
 
 .inline-radio
   clear: none
@@ -171,6 +181,7 @@ button
   padding:
     left: 10px
     right: 10px
+
 
 
 
