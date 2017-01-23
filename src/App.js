@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PageHeader from './PageHeader';
 import RecipeList from './recipe-list/RecipeList';
 import RecipeEditor from './recipe-editor/RecipeEditor';

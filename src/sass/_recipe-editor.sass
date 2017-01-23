@@ -1,0 +1,71 @@
+/* ONLY editor */
+.recipe-editor
+  td 
+    margin-right: 1em
+    padding:
+      top: 0
+      bottom: 0
+  td fieldset, td button, td input 
+    height: 30px
+    vertical-align: middle
+  /*  sizing */
+  .ingredient__name
+    width: 55%
+  .ingredient__amount
+    width: 15%
+  .ingredient__measure
+    width: 30%
+
+input[type="text"], textarea
+  @extend %regular-font
+  width: 100%
+  border: 1px solid $light
+  height: $universal-height
+  padding: .35em
+  margin-top: 0
+  margin-bottom: 0
+
+.inline-radio
+  clear: none
+  display: inline-block
+
+fieldset
+  display: inline-block
+  clear: none
+  margin-right: 1em
+  overflow: hidden
+  padding: 0
+  
+
+/* checkbox itself */
+input[type="checkbox"] 
+  display: none
+  
+input[type="checkbox"] + span
+  height: $universal-height
+  vertical-align: middle
+  display: inline-block
+  padding:
+    left: 10px
+    right: 10px
+    top: 5px
+  em 
+    border-bottom: 1px dashed $link
+
+input[type="checkbox"]:checked + span
+  background-color: $blue
+  color: $page-background
+  border-radius: $border-radius
+  em 
+    border-bottom: none
+
+textarea 
+  width: 100%
+  height: 120px
+  border-color: $light
+
+.recipe__name input
+  height: $universal-height * 1.5
+  font-family: 'Fira Sans Extra Condensed', sans-serif
+  font-weight: 700
+  font-size: 1.5em

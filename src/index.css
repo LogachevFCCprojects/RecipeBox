@@ -440,20 +440,13 @@ button.blue {
   background-color: #00BCD4;
 }
 
-.allingredients__heading {
-  /*  */
-}
-
+/* Tables */
 .allingredients__heading th a {
   color: #FF9800;
 }
 
 .allingredients__heading th + th {
   padding-left: .5em;
-}
-
-.allingredients__body {
-  /*  */
 }
 
 .allingredients__body td {
@@ -464,10 +457,34 @@ button.blue {
   padding-left: 1em;
 }
 
-/*   td:first-child
-    padding-left: .5em
-  td:last-child
-    padding-right: .5em */
+.ingredient {
+  padding: .5em;
+}
+
+button {
+  color: #ECEFF1;
+  border-radius: 3px;
+  height: 30px;
+  border: 0;
+  margin-right: 1em;
+  margin-top: .6em;
+  margin-bottom: .6em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* UNSORTED */
+.ingredient__name .ingredient__name {
+  color: #00bcd4;
+  text-decoration: underline;
+}
+
+.ingredient__name > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ONLY list view */
 /*  sizing */
 .ingredient__name {
   width: 70%;
@@ -481,26 +498,6 @@ button.blue {
   width: 10%;
 }
 
-.ingredient {
-  padding: .5em;
-}
-
-/*   &:hover
-    background-color: rgba($link, .2) */
-.ingredient__name {
-  /*  */
-}
-
-.ingredient__name .ingredient__name {
-  color: #00bcd4;
-  text-decoration: underline;
-}
-
-.ingredient__name > div {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .recipe {
   margin-bottom: 1em;
   background-color: white;
@@ -508,13 +505,7 @@ button.blue {
   padding: 1em;
 }
 
-.incorrect {
-  border: 1px solid red !important;
-  background-color: red !important;
-  color: red !important;
-}
-
-/* editor */
+/* ONLY editor */
 .recipe-editor {
   /*  sizing */
 }
@@ -551,13 +542,6 @@ input[type="text"], textarea {
   margin-bottom: 0;
 }
 
-.recipe__name input {
-  height: 45px;
-  font-family: 'Fira Sans Extra Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 1.5em;
-}
-
 .inline-radio {
   clear: none;
   display: inline-block;
@@ -569,10 +553,8 @@ fieldset {
   margin-right: 1em;
   overflow: hidden;
   padding: 0;
-  /* border: 1px solid $light */
 }
 
-/*   background-color: $page-background */
 /* checkbox itself */
 input[type="checkbox"] {
   display: none;
@@ -601,20 +583,15 @@ input[type="checkbox"]:checked + span em {
   border-bottom: none;
 }
 
-button {
-  color: #ECEFF1;
-  border-radius: 3px;
-  height: 30px;
-  border: 0;
-  margin-right: 1em;
-  margin-top: .6em;
-  margin-bottom: .6em;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 textarea {
   width: 100%;
   height: 120px;
   border-color: #F5F5F5;
+}
+
+.recipe__name input {
+  height: 45px;
+  font-family: 'Fira Sans Extra Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.5em;
 }

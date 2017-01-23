@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import EditorSingleIngredient from './EditorSingleIngredient';
 
     class EditorIngredients extends React.Component {
