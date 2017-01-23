@@ -1,7 +1,7 @@
 import React from 'react';
 import Ingredients from './Ingredients';
 import Instructions from './Instructions';
-import RecipeControls from './RecipeControls';
+// import RecipeControls from './RecipeControls';
 
 class SingleRecipe extends React.Component {
     	formattedDate(dateIsoString) {
@@ -14,15 +14,27 @@ class SingleRecipe extends React.Component {
 			(yy < 10) && (yy = '0' + yy);
 			return dd +'.'+ mm +'.'+ yy;
     	}
+        onRemoveClick = (e) => {
+            e.preventDefault();
+            window.ee.emit('Recipe.remove', this.props.recipeId);
+        }
+
+        onEditClick = (e) => {
+            e.preventDefault();
+            window.ee.emit('Recipe.edit', this.props.recipeId);
+        }
         render() {
-            let {recipe: {name, ingredients, instructions, date}, recipeId} = this.props;
+            let {recipe: {name, ingredients, instructions, date}} = this.props;
             return (
                 <div className="recipe" >
                     <h1 className="recipe__name" >{name}</h1>
                     <Ingredients ingredients={ingredients} />
                     <Instructions instructions={instructions} />
                     <p className="recipe__date" >{this.formattedDate(date)}</p>
-                    <RecipeControls recipeId={recipeId} />
+                    <div className="recipe__controls">
+                        <button onClick={this.onEditClick} className="blue">Edit</button>
+                        <button onClick={this.onRemoveClick} className="grey float-right">X</button>
+                    </div>
                 </div>
                 );
         }

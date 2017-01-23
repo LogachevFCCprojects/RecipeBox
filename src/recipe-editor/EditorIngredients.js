@@ -20,13 +20,16 @@ import EditorSingleIngredient from './EditorSingleIngredient';
             }
 
             return (
+                <div>
                 <table className="allingredients">
                    {/* <IngredientsHeading/>*/}
                     <tbody className="allingredients__body">
                         {ingredientsTemplate}
+                        
                     </tbody>
-                    <button onClick={this.onAddIngredientClick} className="green">+ Add one more Ingredient</button>
                 </table>
+                <button onClick={this.onAddIngredientClick} className="green">+ Add one more Ingredient</button>
+                </div>
                 );
         }
     }

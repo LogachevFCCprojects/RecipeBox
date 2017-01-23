@@ -72,9 +72,9 @@ class EditorSingleIngredient extends React.Component {
             console.log(this.props.amount, this.state.amount);
             console.log(this.props.measure, this.state.measure);
             console.groupEnd();
-            let measuresTemplate = possibleMeasures.map((item) => {
+            let measuresTemplate = possibleMeasures.map((item, index) => {
             	return(
-            		<label className="inline-radio">
+                    <label className="inline-radio" key={index}>
 	            		<input type="checkbox" 
 	            			name="measure" 
 	            			value={item} 
