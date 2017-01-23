@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Ingredients from './Ingredients';
 import Instructions from './Instructions';
 import RecipeControls from './RecipeControls';

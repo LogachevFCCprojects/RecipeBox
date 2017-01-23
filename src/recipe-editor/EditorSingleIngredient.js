@@ -64,7 +64,7 @@ class EditorSingleIngredient extends React.Component {
         }
 
         render() {
-            let {id, name, amount, measure, possibleMeasures} = this.state;
+            let {id, measure, possibleMeasures} = this.state;
             console.group(this.props.id);
             console.log(this.props);
             console.log(this.props.id, this.state.id);

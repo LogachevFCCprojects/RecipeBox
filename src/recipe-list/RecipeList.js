@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import SingleRecipe from './SingleRecipe';
 
 class RecipeList extends React.Component {

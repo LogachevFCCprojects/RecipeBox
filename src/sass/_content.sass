@@ -12,161 +12,23 @@ button.grey
   background-color: $grey
 button.blue
   background-color: $blue
-
-
-//ingredients
-
+  
+/* Tables */
 .allingredients__heading
-  /*  */
   th a
     @extend %header-font
     color: $highlight
-
   th + th 
     padding-left: .5em
 
 .allingredients__body
-  /*  */
   td
     vertical-align: middle
-
   td + td
     padding-left: 1em
-/*   td:first-child
-    padding-left: .5em
-  td:last-child
-    padding-right: .5em */
-
-/*  sizing */
-.ingredient__name
-  width: 70%
-.ingredient__amount
-  width: 20%
-.ingredient__measure
-  width: 10%
 
 .ingredient
   padding: .5em
-
-/*   &:hover
-    background-color: rgba($link, .2) */
-
-.ingredient__name
-  /*  */
-  
-  .ingredient__name, 
-    @extend %header-font
-    color: $link
-    text-decoration: underline
-
-  & > div
-    display: inline-block
-    clear:none
-    vertical-align: middle
-
-// recipes
-.recipe
-  margin-bottom: 1em
-  background-color: white
-  //background-color: #FFF8E1 //test
-  border-radius: $border-radius
-  padding: 1em
-
-
-
-.recipe__instructions
-
-.recipe__date
-
-
-
-.incorrect
-  border: 1px solid red!important
-  background-color: red!important
-  color: red!important
-
-/* editor */
-.recipe-editor
-
-  td 
-    margin-right: 1em
-    padding:
-      top: 0
-      bottom: 0
-
-  td fieldset, td button, td input 
-    
-    height: 30px
-    vertical-align: middle
-
-  /*  sizing */
-  .ingredient__name
-    width: 55%
-  .ingredient__amount
-    width: 15%
-  .ingredient__measure
-    width: 30%
-
-
-
-
-
-
-input[type="text"], textarea
-  @extend %regular-font
-  width: 100%
-  border: 1px solid $light
-  height: $universal-height
-  padding: .35em
-  margin-top: 0
-  margin-bottom: 0
-
-.recipe__name
-  @extend %title-font
-
-.recipe__name input
-  height: $universal-height * 1.5
-  font-family: 'Fira Sans Extra Condensed', sans-serif
-  font-weight: 700
-  font-size: 1.5em
-
-.inline-radio
-  clear: none
-  display: inline-block
-
-fieldset
-  display: inline-block
-  clear: none
-  margin-right: 1em
-  overflow: hidden
-  padding: 0
-  /* border: 1px solid $light */
-/*   background-color: $page-background */
-  
-
-/* checkbox itself */
-input[type="checkbox"] 
-  display: none
-  
-input[type="checkbox"] + span
-  height: $universal-height
-  vertical-align: middle
-  display: inline-block
-  padding:
-    left: 10px
-    right: 10px
-    top: 5px
-  em 
-    border-bottom: 1px dashed $link
-
-input[type="checkbox"]:checked + span
-  background-color: $blue
-  color: $page-background
-  border-radius: $border-radius
-  em 
-    border-bottom: none
-
-
 
 button
   color: $page-background
@@ -177,15 +39,26 @@ button
     right: 1em
     top: .6em
     bottom: .6em
-
   padding:
     left: 10px
     right: 10px
 
+.recipe__name
+  @extend %title-font
 
 
 
-textarea 
-  width: 100%
-  height: 120px
-  border-color: $light
+
+  
+/* UNSORTED */
+.ingredient__name
+
+  .ingredient__name, 
+    @extend %header-font
+    color: $link
+    text-decoration: underline
+
+  & > div
+    display: inline-block
+    clear:none
+    vertical-align: middle
