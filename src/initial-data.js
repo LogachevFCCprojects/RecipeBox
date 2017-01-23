@@ -114,3 +114,5 @@ let initialRecipeList = [
 	date: '2015-01-01T03:13:37.000Z'
 }
 ];
+
+export default initialRecipeList;
