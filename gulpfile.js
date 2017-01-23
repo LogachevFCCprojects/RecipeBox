@@ -1,4 +1,5 @@
 var gulp = require('gulp'), 
+sass = require('gulp-sass');
 
 // WATCH = DEFAULT TASK
 gulp.task('default', ['sass'], function() {
