@@ -1,0 +1,620 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain) */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Include CSS Normalize */
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+main {
+  padding: 2em;
+  float: left;
+  width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  float: left;
+  margin: 0 0 2em;
+}
+
+table thead {
+  border-bottom: 1px solid #000;
+}
+
+table thead th {
+  padding: 0.35em 0 .35em;
+  font-weight: 400;
+  text-align: left;
+}
+
+table tbody {
+  border-bottom: none;
+}
+
+table tbody tr {
+  border-bottom: none;
+}
+
+table tbody tr td {
+  padding: .75em 0;
+}
+
+table tbody tr td a {
+  color: #000;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 .5em 0 0;
+}
+
+table tbody tr td a:hover, table tbody tr td a:active, table tbody tr td a:focus {
+  color: black;
+  border: none;
+}
+
+table tfoot td {
+  padding: 0.35em 0 .35em;
+  text-align: left;
+}
+
+@media screen and (min-width: 1000px) {
+  table {
+    width: 100%;
+  }
+  table thead {
+    border-bottom: 1px solid #000;
+  }
+  table tbody tr {
+    border-bottom: none;
+  }
+}
+
+#rwd-table {
+  display: block;
+}
+
+#rwd-table tbody {
+  border: none;
+}
+
+#rwd-table tbody, #rwd-table th, #rwd-table td, #rwd-table tr, #rwd-table tfoot {
+  display: block;
+}
+
+#rwd-table thead {
+  display: none;
+}
+
+#rwd-table tr {
+  float: left;
+  width: 100%;
+  margin: 0 0 1em;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 5px 0px #ddd;
+  border-radius: 4px;
+  border-top: 1px solid #000;
+}
+
+#rwd-table tr td {
+  padding: .5em .5em .5em 50%;
+  float: left;
+  width: 100%;
+}
+
+#rwd-table tr td:before {
+  width: 100%;
+  display: block;
+  float: left;
+  padding: .5em .5em .5em 0;
+  clear: both;
+  margin: -.5em 0 0 -100%;
+  font-size: 1.125em;
+}
+
+@media screen and (min-width: 600px) {
+  #rwd-table {
+    display: table;
+    border: none;
+  }
+  #rwd-table tbody {
+    border-bottom: none;
+  }
+  #rwd-table th, #rwd-table td {
+    display: table-cell;
+  }
+  #rwd-table tr {
+    display: table-row;
+    border: none;
+    border-bottom: none;
+    float: none;
+    margin: 0;
+    box-shadow: none;
+  }
+  #rwd-table tr td {
+    padding: .75em 0 0.75em .25em;
+    float: none;
+    width: auto;
+  }
+  #rwd-table tr td:before {
+    padding: 0 !important;
+  }
+  #rwd-table thead {
+    display: table-header-group;
+  }
+  #rwd-table tbody, #rwd-table tfoot {
+    display: table-row-group;
+  }
+  #rwd-table tr:nth-of-type(even) {
+    background: none;
+  }
+}
+
+#rwd-table-large {
+  display: block;
+}
+
+#rwd-table-large tbody {
+  border: none;
+}
+
+#rwd-table-large tbody, #rwd-table-large th, #rwd-table-large td, #rwd-table-large tr, #rwd-table-large tfoot {
+  display: block;
+}
+
+#rwd-table-large thead {
+  display: none;
+}
+
+#rwd-table-large tr {
+  float: left;
+  width: 100%;
+  margin: 0 0 1em;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 5px 0px #ddd;
+  border-radius: 4px;
+  border-top: 1px solid #000;
+}
+
+#rwd-table-large tr td {
+  padding: .5em .5em .5em 50%;
+  float: left;
+  width: 100%;
+}
+
+#rwd-table-large tr td:before {
+  width: 100%;
+  display: block;
+  float: left;
+  padding: .5em .5em .5em 0;
+  clear: both;
+  margin: -.5em 0 0 -100%;
+  font-size: 1.125em;
+}
+
+@media screen and (min-width: 1000px) {
+  #rwd-table-large {
+    display: table;
+    border: none;
+  }
+  #rwd-table-large tbody {
+    border-bottom: none;
+  }
+  #rwd-table-large th, #rwd-table-large td {
+    display: table-cell;
+  }
+  #rwd-table-large tr {
+    display: table-row;
+    border: none;
+    border-bottom: none;
+    float: none;
+    margin: 0;
+    box-shadow: none;
+  }
+  #rwd-table-large tr td {
+    padding: .75em 0 0.75em .25em;
+    float: none;
+    width: auto;
+  }
+  #rwd-table-large tr td:before {
+    padding: 0 !important;
+  }
+  #rwd-table-large thead {
+    display: table-header-group;
+  }
+  #rwd-table-large tbody, #rwd-table-large tfoot {
+    display: table-row-group;
+  }
+  #rwd-table-large tr:nth-of-type(even) {
+    background: none;
+  }
+}
+
+#rwd-table tbody tr td:nth-of-type(1):before {
+  content: "Heading Col 1";
+}
+
+@media screen and (min-width: 600px) {
+  #rwd-table tbody tr td:nth-of-type(1):before {
+    content: '';
+  }
+}
+
+#rwd-table tbody tr td:nth-of-type(2):before {
+  content: "Heading Col 2";
+}
+
+@media screen and (min-width: 600px) {
+  #rwd-table tbody tr td:nth-of-type(2):before {
+    content: '';
+  }
+}
+
+#rwd-table tbody tr td:nth-of-type(3):before {
+  content: "Heading Col 3";
+}
+
+@media screen and (min-width: 600px) {
+  #rwd-table tbody tr td:nth-of-type(3):before {
+    content: '';
+  }
+}
+
+#rwd-table-large tbody tr td:nth-of-type(1):before {
+  content: "Heading Col 1";
+}
+
+@media screen and (min-width: 1000px) {
+  #rwd-table-large tbody tr td:nth-of-type(1):before {
+    content: '';
+  }
+}
+
+#rwd-table-large tbody tr td:nth-of-type(2):before {
+  content: "Heading Col 2";
+}
+
+@media screen and (min-width: 1000px) {
+  #rwd-table-large tbody tr td:nth-of-type(2):before {
+    content: '';
+  }
+}
+
+#rwd-table-large tbody tr td:nth-of-type(3):before {
+  content: "Heading Col 3";
+}
+
+@media screen and (min-width: 1000px) {
+  #rwd-table-large tbody tr td:nth-of-type(3):before {
+    content: '';
+  }
+}
+
+#rwd-table-large tbody tr td:nth-of-type(4):before {
+  content: "Heading Col 4";
+}
+
+@media screen and (min-width: 1000px) {
+  #rwd-table-large tbody tr td:nth-of-type(4):before {
+    content: '';
+  }
+}
+
+.page__title h1, .page__title h2, .recipe__name {
+  font-family: 'Fira Sans Extra Condensed', sans-serif;
+  font-weight: 700;
+  color: #212121;
+  font-size: 1.5em;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.allingredients__heading th a, .ingredient__name .ingredient__name {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.allingredients__heading th a a, .ingredient__name .ingredient__name a {
+  text-decoration: underline;
+}
+
+html, body, input[type="text"], textarea {
+  font-family: 'Open Sans', sans-serif;
+  color: #212121;
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+#root {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+html, body {
+  background-color: #ECEFF1;
+  line-height: 1.1;
+}
+
+.page__title {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.page__title h1 {
+  font-size: 3em;
+}
+
+.page__title em {
+  font-color: #333;
+  display: block;
+}
+
+.page__title a {
+  color: #00bcd4;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.page__title * + * {
+  margin-top: .2em;
+}
+
+.digits {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+button.red {
+  background-color: #D84315;
+}
+
+button.green {
+  background-color: #66BB6A;
+}
+
+button.grey {
+  background-color: #B0BEC5;
+}
+
+button.blue {
+  background-color: #00BCD4;
+}
+
+.allingredients__heading {
+  /*  */
+}
+
+.allingredients__heading th a {
+  color: #FF9800;
+}
+
+.allingredients__heading th + th {
+  padding-left: .5em;
+}
+
+.allingredients__body {
+  /*  */
+}
+
+.allingredients__body td {
+  vertical-align: middle;
+}
+
+.allingredients__body td + td {
+  padding-left: 1em;
+}
+
+/*   td:first-child
+    padding-left: .5em
+  td:last-child
+    padding-right: .5em */
+/*  sizing */
+.ingredient__name {
+  width: 70%;
+}
+
+.ingredient__amount {
+  width: 20%;
+}
+
+.ingredient__measure {
+  width: 10%;
+}
+
+.ingredient {
+  padding: .5em;
+}
+
+/*   &:hover
+    background-color: rgba($link, .2) */
+.ingredient__name {
+  /*  */
+}
+
+.ingredient__name .ingredient__name {
+  color: #00bcd4;
+  text-decoration: underline;
+}
+
+.ingredient__name > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.recipe {
+  margin-bottom: 1em;
+  background-color: white;
+  border-radius: 3px;
+  padding: 1em;
+}
+
+.incorrect {
+  border: 1px solid red !important;
+  background-color: red !important;
+  color: red !important;
+}
+
+/* editor */
+.recipe-editor {
+  /*  sizing */
+}
+
+.recipe-editor td {
+  margin-right: 1em;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.recipe-editor td fieldset, .recipe-editor td button, .recipe-editor td input {
+  height: 30px;
+  vertical-align: middle;
+}
+
+.recipe-editor .ingredient__name {
+  width: 55%;
+}
+
+.recipe-editor .ingredient__amount {
+  width: 15%;
+}
+
+.recipe-editor .ingredient__measure {
+  width: 30%;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  border: 1px solid #F5F5F5;
+  height: 30px;
+  padding: .35em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.recipe__name input {
+  height: 45px;
+  font-family: 'Fira Sans Extra Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.inline-radio {
+  clear: none;
+  display: inline-block;
+}
+
+fieldset {
+  display: inline-block;
+  clear: none;
+  margin-right: 1em;
+  overflow: hidden;
+  padding: 0;
+  /* border: 1px solid $light */
+}
+
+/*   background-color: $page-background */
+/* checkbox itself */
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + span {
+  height: 30px;
+  vertical-align: middle;
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+input[type="checkbox"] + span em {
+  border-bottom: 1px dashed #00bcd4;
+}
+
+input[type="checkbox"]:checked + span {
+  background-color: #00BCD4;
+  color: #ECEFF1;
+  border-radius: 3px;
+}
+
+input[type="checkbox"]:checked + span em {
+  border-bottom: none;
+}
+
+button {
+  color: #ECEFF1;
+  border-radius: 3px;
+  height: 30px;
+  border: 0;
+  margin-right: 1em;
+  margin-top: .6em;
+  margin-bottom: .6em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  border-color: #F5F5F5;
+}

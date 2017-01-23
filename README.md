@@ -15,35 +15,13 @@
 ## Installing development environment ##
 1. Install **Node.js**
 2. Execute `npm i --save-dev` in project directory to install all dependencies.
-3. Execute `bower i react` in project directory to install react.
-4. Execute `bower i eventEmitter` in project directory to install EventEmitter.
 
 ## Watching ##
-Execute `gulp watch` and browser will open.
+Execute `xxx` and browser will open.
 
 ## Building ##
-Execute `gulp build` and browser will open.
+Execute `xxx` and browser will open.
 
-## Structure ##
-
-```
-    window.ee
-    Array.prototype.clone
-    initialRecipeList
-    
-App
-    PageHeader
-    RecipeList (recipeList)
-        SingleRecipe (recipe, recipeId)
-            Ingredients (ingredients)
-            Instructions (instructions)
-                IngredientsHeading * ()
-                SingleIngredient (ingredient)
-            RecipeControls (recipeId)
-
-    RecipeEditor (recipe, recipeId)
-        EditorIngredients (ingredients)
-            IngredientsHeading * ()
-            EditorSingleIngredient (ingredient, ingredientId)
-* — common
-```
+## Not only React... ##
+Array.prototype.clone
+Event Emitter

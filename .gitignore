@@ -1,4 +1,6 @@
-/node_modules/
-/src/libs/
-/src/js/
-/src/css/
+node_modules
+coverage
+build
+.DS_Store
+.env
+npm-debug.log
