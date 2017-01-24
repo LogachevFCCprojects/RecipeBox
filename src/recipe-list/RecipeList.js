@@ -11,9 +11,9 @@ class RecipeList extends React.Component {
             let RecipeListTemplate;
 
             if (recipeList.length > 0) {
-                RecipeListTemplate = recipeList.map(function(item, index) {
+                RecipeListTemplate = recipeList.map((item, index) => {
                     return (
-                        <SingleRecipe recipeId={index} recipe={item} key={index}/>
+                        <SingleRecipe recipeId={index} recipe={item} key={index} removeRecipe={this.props.removeRecipe}/>
                         )
                 })
             } else {

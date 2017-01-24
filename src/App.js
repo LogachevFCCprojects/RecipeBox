@@ -26,10 +26,17 @@ class App extends React.Component {
         this.removeEventListeners(this);
     }
 
+    removeRecipe(id) {
+        console.info('••• По-новому удаляем рецепт', id);
+        let nextList = this.state.recipeList.clone();
+        nextList.splice(id, 1);
+        this.setState({recipeList: nextList});
+    }
+
     addEventListeners() {
         // event
         window.ee.addListener('Recipe.remove', (id) => {
-            console.log('Удаляем рецепт', id);
+            console.info('Удаляем рецепт', id);
             let nextList = this.state.recipeList.clone();
             nextList.splice(id, 1);
             this.setState({recipeList: nextList});
@@ -81,7 +88,7 @@ class App extends React.Component {
         return (
             <section>
                 <PageHeader />
-                { (current === 'list') && <RecipeList recipeList={recipeList}/> }
+                { (current === 'list') && <RecipeList recipeList={recipeList} removeRecipe={this.removeRecipe}/> }
                 { (current === 'edit') && <RecipeEditor recipeId={recipeId} recipe={recipeList[recipeId]}/> }
             </section>
             );

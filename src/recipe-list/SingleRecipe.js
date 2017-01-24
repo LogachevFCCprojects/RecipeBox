@@ -33,7 +33,8 @@ class SingleRecipe extends React.Component {
                     <p className="recipe__date" >{this.formattedDate(date)}</p>
                     <div className="recipe__controls">
                         <button onClick={this.onEditClick} className="blue">Edit</button>
-                        <button onClick={this.onRemoveClick} className="grey float-right">X</button>
+                        {/*<button onClick={this.onRemoveClick} className="grey float-right">X</button>*/}
+                        <button onClick={this.props.removeRecipe.bind(this, this.props.recipeId)} className="grey float-right">X</button>
                     </div>
                 </div>
                 );
