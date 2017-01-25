@@ -29,6 +29,6 @@ Execute `npm start` and browser will open.
 ## Building ##
 Execute `npm run build` and browser will open.
 
-## Not only React... ##
-Array.prototype.clone
-Event Emitter
+## What do I use:
+### [Olical/EventEmitter](https://github.com/Olical/EventEmitter)
+### [facebook/immutable-js](https://github.com/facebook/immutable-js)
