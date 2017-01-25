@@ -5,17 +5,12 @@ import SingleRecipe from './SingleRecipe';
 class RecipeList extends React.Component {
   onAddRecipeClick = (e) => {
     e.preventDefault();
-    window.ee.emit('Recipe.edit', -1);
+    window.ee.emit('Recipe.add');
   };
   render() {
-    console.dir(this.props.recipeList.get(0).get('name'));
     let template;
     if (this.props.recipeList.size) {
-      template = this.props.recipeList.map((item, index) => {
-        return (
-          <SingleRecipe recipeId={ index } recipe={ item.get('name') } key={ index } />
-        )
-      })
+      template = this.props.recipeList.map((item, index) => <SingleRecipe recipeId={ index } recipe={ item } key={ index } />)
     } else {
       template = <p>No recipes yet</p>
     }

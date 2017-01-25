@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Immutable from 'immutable';
 
 import EditorIngredients from './EditorIngredients';
 
+// This module is responsible for:
+// • Checking all new incoming data before submission (?)
+// • Managing unsaved list of ingredients
+
+// This module can not touch global data structure
+
 class RecipeEditor extends React.Component {
   static defaultProps = {
-    recipe: {
-      id: -1,
+    recipe: Immutable.fromJS({
       name: '',
       ingredients: [
         {
@@ -16,10 +22,12 @@ class RecipeEditor extends React.Component {
         }
       ],
       instructions: '',
-    }
+    })
   };
 
-  state = this.props.recipe;
+  state = {
+    recipe: this.props.recipe
+  };
 
   componentDidMount() {
     this.addEventListeners(this);
@@ -35,36 +43,28 @@ class RecipeEditor extends React.Component {
   addEventListeners() {
     // event
     window.ee.addListener('Ingredient.remove', (id) => {
-      console.log('remove', id);
-      let nextList = this.state.ingredients.clone();
-      nextList.splice(id, 1);
-      console.log(nextList);
+      let list = this.state.recipe.updateIn(['ingredients'], (arr) => (arr.splice(id, 1)));
       this.setState({
-        ingredients: nextList
+        ingredients: list
       });
     });
     // event
     window.ee.addListener('Ingredient.add', (id) => {
-      let nextList = this.state.ingredients.clone();
-      nextList.push({
+      let emptyMap = Immutable.fromJS({
         name: '',
         amount: '',
-        measure: '',
+        measure: ''
       });
+      let nextList = this.state.recipe.updateIn(['ingredients'], list => list.push(emptyMap));
       this.setState({
-        ingredients: nextList
+        recipe: nextList
       });
     });
     // event
-    window.ee.addListener('Ingredient.update', (obj) => {
-      let nextList = this.state.ingredients.clone();
-      nextList[obj.id] = {
-        name: obj.name,
-        amount: obj.amount,
-        measure: obj.measure,
-      };
+    window.ee.addListener('Ingredient.update', (obj, id) => { // obj is Map
+      let list = this.state.recipe.setIn(['ingredients', id], obj);
       this.setState({
-        ingredients: nextList
+        ingredients: list
       });
     });
   }
@@ -74,11 +74,12 @@ class RecipeEditor extends React.Component {
     window.ee.removeListener('Ingredient.add');
   }
   updateInputElements() {
-    ReactDOM.findDOMNode(this.refs.name).value = this.state.name;
-    ReactDOM.findDOMNode(this.refs.instructions).value = this.state.instructions;
+    ReactDOM.findDOMNode(this.refs.name).value = this.state.recipe.get('name');
+    ReactDOM.findDOMNode(this.refs.instructions).value = this.state.recipe.get('instructions');
   }
 
   onAnyFieldChange = (e) => {
+    console.log(ReactDOM.findDOMNode(this.refs.name).value);
     this.setState({
       name: ReactDOM.findDOMNode(this.refs.name).value,
       instructions: ReactDOM.findDOMNode(this.refs.instructions).value
@@ -86,13 +87,12 @@ class RecipeEditor extends React.Component {
   };
   onSaveClick = (e) => {
     e.preventDefault();
-    let obj = {
-      id: this.props.recipeId,
-      name: ReactDOM.findDOMNode(this.refs.name).value,
-      ingredients: this.state.ingredients.clone(),
-      instructions: ReactDOM.findDOMNode(this.refs.instructions).value,
-    };
-    window.ee.emit('Recipe.publish', obj);
+    let obj = Immutable.fromJS({
+      name: this.state.recipe.get('name'),
+      ingredients: this.state.recipe.get('ingredients'), // ingredients is List
+      instructions: this.state.recipe.get('instructions')
+    });
+    window.ee.emit('Recipe.publish', obj, this.props.recipeId); // obj is Map
   };
   onCancelClick = (e) => {
     e.preventDefault();
@@ -100,14 +100,16 @@ class RecipeEditor extends React.Component {
   };
 
   render() {
+    // console.log('RecipeEditor', obj.get('id'));
     return (
       <div className="recipe-editor">
-        <h1 className="recipe__name">
-                      <input type='text' onChange={ this.onAnyFieldChange } placeholder='Recipe name' ref='name'/>
-                      </h1>
-        <EditorIngredients ingredients={ this.state.ingredients } />
+        <div className="recipe__name">
+          <input type='text' onChange={ this.onAnyFieldChange } placeholder='Recipe name' ref='name' />
+        </div>
+        <EditorIngredients ingredients={ this.state.recipe.get('ingredients') } />
         <h3>Instructions:</h3>
-        <textarea className='recipe__instructions' onChange={ this.onAnyFieldChange } placeholder='Recipe instructions' ref='instructions'></textarea>
+        <textarea className='recipe__instructions' onChange={ this.onAnyFieldChange } placeholder='Describe how to cook it' ref='instructions'>
+        </textarea>
         <div className="recipe__controls">
           <button onClick={ this.onSaveClick } className="blue">Save</button>
           <button onClick={ this.onCancelClick } className="grey float-right">Cancel</button>

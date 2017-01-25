@@ -17,34 +17,26 @@ class SingleRecipe extends React.Component {
   }
   onRemoveClick = (e) => {
     e.preventDefault();
-    window
-      .ee
-      .emit('Recipe.remove', this.props.recipeId);
+    window.ee.emit('Recipe.remove', this.props.recipeId);
   }
 
   onEditClick = (e) => {
     e.preventDefault();
-    window
-      .ee
-      .emit('Recipe.edit', this.props.recipeId);
+    window.ee.emit('Recipe.edit', this.props.recipeId);
   }
   render() {
-    let {recipe: {name, ingredients, instructions, date}} = this.props;
+    let {recipe} = this.props;
     return (
       <div className="recipe">
-        <h1 className="recipe__name">{ name }</h1>
-        <Ingredients ingredients={ ingredients } />
-        <Instructions instructions={ instructions } />
+        <h1 className="recipe__name">{ recipe.get('name') }</h1>
+        <Ingredients ingredients={ recipe.get('ingredients') } />
+        <Instructions instructions={ recipe.get('instructions') } />
         <p className="recipe__date">
-          { this.formattedDate(date) }
+          { this.formattedDate(recipe.get('date')) }
         </p>
         <div className="recipe__controls">
           <button onClick={ this.onEditClick } className="blue">Edit</button>
-          { /*<button onClick={this.onRemoveClick} className="grey float-right">X</button>*/ }
-          <button onClick={ this
-                              .props
-                              .removeRecipe
-                              .bind(this, this.props.recipeId) } className="grey float-right">X</button>
+          <button onClick={ this.onRemoveClick } className="grey float-right">X</button>
         </div>
       </div>
       );
