@@ -4,10 +4,11 @@
   "main": "index.js",
   "author": "VladimirLogachev",
   "devDependencies": {
-    "react-scripts": "0.8.5",
-    "wolfy87-eventemitter": "^5.1.0",
     "gulp": "^3.9.1",
-    "gulp-sass": "^3.0.0"
+    "gulp-sass": "^3.0.0",
+    "immutable": "^3.8.1",
+    "react-scripts": "0.8.5",
+    "wolfy87-eventemitter": "^5.1.0"
   },
   "dependencies": {
     "react": "^15.4.2",

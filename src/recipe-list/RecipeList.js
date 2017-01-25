@@ -1,4 +1,5 @@
 import React from 'react';
+
 import SingleRecipe from './SingleRecipe';
 
 class RecipeList extends React.Component {
@@ -7,23 +8,22 @@ class RecipeList extends React.Component {
             window.ee.emit('Recipe.edit', -1);
         };
         render() {
-            let {recipeList} = this.props;
-            let RecipeListTemplate;
-
-            if (recipeList.length > 0) {
-                RecipeListTemplate = recipeList.map((item, index) => {
+            console.dir(this.props.recipeList.get(0).get('name'));
+            let template;
+            if (this.props.recipeList.size) {
+                template = this.props.recipeList.map((item, index) => {
                     return (
-                        <SingleRecipe recipeId={index} recipe={item} key={index} removeRecipe={this.props.removeRecipe}/>
+                        <SingleRecipe recipeId={index} recipe={item.get('name')} key={index}/>
                         )
                 })
             } else {
-                RecipeListTemplate = <p>No recipes yet</p>
+                template = <p>No recipes yet</p>
             }
 
             return (
                 <div className="recipe-list">
                 <button onClick={this.onAddRecipeClick} className="green">+ Add new Recipe</button>
-                {RecipeListTemplate}
+                {template}
                 </div>
                 );
         }

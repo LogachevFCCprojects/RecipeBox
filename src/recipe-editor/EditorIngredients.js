@@ -1,4 +1,5 @@
 import React from 'react';
+
 import EditorSingleIngredient from './EditorSingleIngredient';
 
     class EditorIngredients extends React.Component {

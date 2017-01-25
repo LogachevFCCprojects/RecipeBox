@@ -1,4 +1,5 @@
 import React from 'react';
+
 import IngredientsHeading from './IngredientsHeading';
 import SingleIngredient from './SingleIngredient';
 
