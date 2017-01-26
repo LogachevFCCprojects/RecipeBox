@@ -14,11 +14,30 @@ import initialRecipeList from './initial-data';
 
 class App extends React.Component {
   state = {
-    recipeList: this.arraySortByDateField(Immutable.fromJS(initialRecipeList)),
+    recipeList: this.arraySortByDateField(this.readLocalStorage()),
     route: {
       current: 'list'
     }
   };
+  readLocalStorage() {
+    //returns Immutable List
+    try {
+      //
+      let str = localStorage.getItem('vladimirlogachev_recipebox');
+      let arr = JSON.parse(str);
+      let immutColl = Immutable.fromJS(arr);
+      immutColl = this.arraySortByDateField(immutColl);
+      return immutColl;
+    } catch (err) {
+      console.error(err);
+    }
+    console.info('Local Storage has no valid JSON for me ;-)');
+    return this.arraySortByDateField(Immutable.fromJS(initialRecipeList));
+  }
+  writeLocalStorage(immutableCollection) {
+    //accepts Immutable List
+    localStorage.setItem('vladimirlogachev_recipebox', JSON.stringify(immutableCollection));
+  }
 
   componentDidMount() {
     this.addEventListeners(this);
@@ -29,16 +48,14 @@ class App extends React.Component {
   addEventListeners() {
     // event
     window.ee.addListener('Recipe.remove', (id) => {
-      console.log('минуточку', id);
       let nextList = this.state.recipeList.splice(id, 1);
-      console.log(nextList);
+      this.writeLocalStorage(nextList);
       this.setState({
         recipeList: nextList,
         route: {
           current: 'list'
         }
       });
-
     });
     // event
     window.ee.addListener('Recipe.edit', (id) => {
@@ -58,7 +75,7 @@ class App extends React.Component {
       });
     });
     // event
-    window.ee.addListener('Recipe.publish', (obj, id) => { //obj is Map(List(Map)) готовый бездатый
+    window.ee.addListener('Recipe.publish', (obj, id) => { //obj is Map(List(Map))
       // set new date
       let d = new Date();
       obj = obj.set('date', d.toISOString());
@@ -72,6 +89,7 @@ class App extends React.Component {
       // sort Recipe List
       list = Immutable.fromJS(this.arraySortByDateField(list));
       // flush
+      this.writeLocalStorage(list);
       this.setState({
         recipeList: list,
         route: {
