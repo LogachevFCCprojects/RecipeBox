@@ -28,15 +28,17 @@ class SingleRecipe extends React.Component {
     let {recipe} = this.props;
     return (
       <div className="recipe">
-        <h1 className="recipe__name">{ recipe.get('name') }</h1>
+        <div className="recipe__heading">
+          <span className="recipe__name">{ recipe.get('name') } </span>
+          <span className="meta">
+                      <a onClick={ this.onEditClick } className="blue"><i className="icon-edit"></i>Edit</a>
+                      <a onClick={ this.onRemoveClick } className="red"><i className="icon-remove"></i>Remove</a>
+                      </span>
+        </div>
         <Ingredients ingredients={ recipe.get('ingredients') } />
         <Instructions instructions={ recipe.get('instructions') } />
-        <p className="recipe__date">
-          { this.formattedDate(recipe.get('date')) }
-        </p>
-        <div className="recipe__controls">
-          <a onClick={ this.onEditClick } className="blue"><i className="icon-edit"></i>Edit</a>
-          <a onClick={ this.onRemoveClick } className="red float-right"><i className="icon-remove"></i>Remove</a>
+        <div className="recipe__footer">
+          <span className="recipe__date">{ this.formattedDate(recipe.get('date')) }</span>
         </div>
       </div>
       );

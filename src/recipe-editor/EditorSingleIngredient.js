@@ -17,22 +17,13 @@ class EditorSingleIngredient extends React.Component {
     ReactDOM.findDOMNode(this.refs.amount).value = this.props.ingredient.get('amount');
   }
   submitFieldValue(fieldName, fieldValue) {
-    // prepare an object before changes // looks like anti-pattern...
-    let nextObj = {
+    let nextObj = { // is native JS Object
       name: this.props.ingredient.get('name'),
       amount: this.props.ingredient.get('amount'),
       measure: this.props.ingredient.get('measure')
     };
-
     // actually we update field Value here
     nextObj[fieldName] = fieldValue;
-
-    // // CHANGE State anyway
-    // this.setState({
-    //   [fieldName]: fieldValue
-    // });
-
-    //why look for an object if we can lookup state?
     window.ee.emit('Ingredient.update', Immutable.fromJS(nextObj), this.props.id);
   }
 
@@ -59,7 +50,6 @@ class EditorSingleIngredient extends React.Component {
         </label>
         );
     });
-    console.log('single ingredient renders');
     return (
       <tr className="ingredient">
         <td className="ingredient__name">
@@ -72,7 +62,7 @@ class EditorSingleIngredient extends React.Component {
           <fieldset>
             { measuresTemplate }
           </fieldset>
-          <a onClick={ this.onRemoveClick } className="red"><i className="icon-remove"></i>Remove</a>
+          <a onClick={ this.onRemoveClick } className="red"><i className="icon-del"></i></a>
         </td>
       </tr>
     )

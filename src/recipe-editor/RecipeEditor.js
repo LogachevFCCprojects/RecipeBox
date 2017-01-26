@@ -22,7 +22,8 @@ class RecipeEditor extends React.Component {
         }
       ],
       instructions: '',
-    })
+    }),
+    recipeId: -1
   };
 
   state = {
@@ -62,7 +63,6 @@ class RecipeEditor extends React.Component {
     });
     // event
     window.ee.addListener('Ingredient.update', (obj, id) => { // obj is Map
-      console.log(`> update ingredient with id: ${id}`);
       let nextRecipe = this.state.recipe.setIn(['ingredients', id], obj);
       this.setState({
         recipe: nextRecipe
@@ -110,13 +110,20 @@ class RecipeEditor extends React.Component {
   };
   onRemoveClick = (e) => {
     e.preventDefault();
+    console.log('попросили удалить', this.props.recipeId);
     window.ee.emit('Recipe.remove', this.props.recipeId);
+
   };
 
   render() {
-    console.log('editor renders');
+
     return (
       <div className="recipe-editor">
+        <div className="meta">
+          <a onClick={ this.onCancelClick } className="grey">
+            <i className="icon-cancel"></i>Back to list
+          </a>
+        </div>
         <div className="recipe__name">
           <input type='text' onChange={ this.onNameChange } placeholder='Recipe name' ref='name' />
         </div>
@@ -125,7 +132,6 @@ class RecipeEditor extends React.Component {
         </textarea>
         <div className="recipe__controls">
           <button onClick={ this.onSaveClick } className="blue"><i className="icon-submit"></i>Save</button>
-          <button onClick={ this.onCancelClick } className="grey"><i className="icon-close"></i>Cancel</button>
           <button onClick={ this.onRemoveClick } className="red float-right"><i className="icon-remove"></i>Remove</button>
         </div>
       </div>

@@ -17,7 +17,9 @@ class RecipeList extends React.Component {
 
     return (
       <div className="recipe-list">
-        <button onClick={ this.onAddRecipeClick } className="green"><i className="icon-add"></i> Add new Recipe</button>
+        <div onClick={ this.onAddRecipeClick } className="recipe recipe--mockup">
+          <a onClick={ this.onAddRecipeClick } className="green"><i className="icon-list-add"></i>Add new Recipe</a>
+        </div>
         { template }
       </div>
       );
