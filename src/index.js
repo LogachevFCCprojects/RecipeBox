@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import EventEmitter from 'wolfy87-eventemitter';
 import './index.css';
+import './icons/basic-editor.css'
 
 // This module holds EventEmitter object 
 // and renders React first time

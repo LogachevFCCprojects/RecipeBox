@@ -59,6 +59,7 @@ class EditorSingleIngredient extends React.Component {
         </label>
         );
     });
+    console.log('single ingredient renders');
     return (
       <tr className="ingredient">
         <td className="ingredient__name">
@@ -71,7 +72,7 @@ class EditorSingleIngredient extends React.Component {
           <fieldset>
             { measuresTemplate }
           </fieldset>
-          <button onClick={ this.onRemoveClick } className="grey">X</button>
+          <a onClick={ this.onRemoveClick } className="red"><i className="icon-remove"></i>Remove</a>
         </td>
       </tr>
     )

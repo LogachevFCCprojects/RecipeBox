@@ -12,12 +12,33 @@ button.grey
   background-color: $grey
 button.blue
   background-color: $blue
+
+[class^="icon-"]
+  margin-right: .2em
+  font-size: 1.2em
+  vertical-align: middle
+
+a 
+  text-decoration: none
+a:hover
+  text-decoration: underline
+a.red
+  color: $red
+a.green
+  color: $green
+a.grey
+  color: $grey
+a.blue
+  color: $blue
+
   
 /* Tables */
 .allingredients__heading
-  th a
+  border-bottom: 1px solid rgba($grey, .33)
+  th
     @extend %header-font
-    color: $highlight
+    color: rgba($dark, .33)
+    font-size: .9em
   th + th 
     padding-left: .5em
 

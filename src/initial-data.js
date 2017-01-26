@@ -3,27 +3,27 @@ let initialRecipeList = [
     name: 'Lemon drizzle cake',
     ingredients: [
       {
-        name: 'unsalted butter, softened',
+        name: 'Unsalted butter, softened',
         amount: 225,
         measure: 'g'
       },
       {
-        name: 'caster sugar',
+        name: 'Caster sugar',
         amount: 225,
         measure: 'g'
       },
       {
-        name: 'egg',
+        name: 'Egg',
         amount: 4,
         measure: 'pcs'
       },
       {
-        name: 'finely grated lemon zest',
+        name: 'Finely grated lemon zest',
         amount: 1,
         measure: 'pcs'
       },
       {
-        name: 'lemon juice for the drizzle topping',
+        name: 'Lemon juice for the drizzle topping',
         amount: 50,
         measure: 'ml'
       },
@@ -36,32 +36,32 @@ let initialRecipeList = [
     name: 'Even better lemon cake',
     ingredients: [
       {
-        name: 'unsalted butter, softened',
+        name: 'Salted butter, softened',
         amount: 225,
         measure: 'g'
       },
       {
-        name: 'caster sugar',
+        name: 'Some sugar',
         amount: 225,
         measure: 'g'
       },
       {
-        name: 'egg',
+        name: 'Egg',
         amount: 4,
         measure: 'pcs'
       },
       {
-        name: 'finely grated lemon zest',
+        name: 'Finely grated lemon zest',
         amount: 1,
         measure: 'pcs'
       },
       {
-        name: 'lemon juice for the drizzle topping',
+        name: 'Lemon juice for the drizzle topping',
         amount: 50,
         measure: 'ml'
       },
       {
-        name: 'caster sugar for the drizzle topping',
+        name: 'Caster sugar for the drizzle topping',
         amount: 70,
         measure: 'g'
       },
@@ -74,37 +74,37 @@ let initialRecipeList = [
     name: 'Lemon drizzle cake with vodka',
     ingredients: [
       {
-        name: 'unsalted butter, softened',
+        name: 'Unsalted butter, softened',
         amount: 225,
         measure: 'g'
       },
       {
-        name: 'vodka',
+        name: 'Vodka',
         amount: 100,
         measure: 'ml'
       },
       {
-        name: 'caster sugar',
+        name: 'Caster sugar',
         amount: 225,
         measure: 'g'
       },
       {
-        name: 'egg',
+        name: 'Egg',
         amount: 4,
         measure: 'pcs'
       },
       {
-        name: 'finely grated lemon zest',
+        name: 'Finely grated lemon zest',
         amount: 1,
         measure: 'pcs'
       },
       {
-        name: 'lemon juice for the drizzle topping',
+        name: 'Lemon juice for the drizzle topping',
         amount: 50,
         measure: 'ml'
       },
       {
-        name: 'caster sugar for the drizzle topping',
+        name: 'Caster sugar for the drizzle topping',
         amount: 70,
         measure: 'g'
       },

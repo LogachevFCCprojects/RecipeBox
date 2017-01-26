@@ -10,7 +10,6 @@ class Instructions extends React.Component {
     });
     return (
       <div className="recipe__instructions">
-        <h3>Instructions: </h3>
         { template }
       </div>
       );
