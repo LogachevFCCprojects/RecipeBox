@@ -3,6 +3,9 @@ import React from 'react';
 import SingleRecipe from './SingleRecipe';
 
 class RecipeList extends React.Component {
+  componentDidMount() {
+    window.ee.emit('Recipe.show', 0);
+  }
   onAddRecipeClick = (e) => {
     e.preventDefault();
     window.ee.emit('Recipe.add');

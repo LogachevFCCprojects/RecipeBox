@@ -13,8 +13,6 @@ class EditorIngredients extends React.Component {
       template = this.props.ingredients.map(function(item, index) {
         return <EditorSingleIngredient ingredient={ item } id={ index } key={ index } />
       })
-    } else {
-      template = <p>No ingredients in this recipe</p>
     }
     return (
       <div>
@@ -23,9 +21,11 @@ class EditorIngredients extends React.Component {
             { template }
           </tbody>
         </table>
-        <a onClick={ this.onAddIngredientClick } className="green">
-          <i className="icon-add"></i>Add one more Ingredient
-        </a>
+        <div className="meta">
+          <a onClick={ this.onAddIngredientClick } className="green">
+            <i className="icon-add"></i>Add one more Ingredient
+          </a>
+        </div>
       </div>
       );
   }

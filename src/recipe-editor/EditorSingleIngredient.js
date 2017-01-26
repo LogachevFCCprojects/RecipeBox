@@ -62,7 +62,9 @@ class EditorSingleIngredient extends React.Component {
           <fieldset>
             { measuresTemplate }
           </fieldset>
-          <a onClick={ this.onRemoveClick } className="red"><i className="icon-del"></i></a>
+          <span className="meta">
+                      <a onClick={ this.onRemoveClick } className="red"><i className="icon-del"></i></a>
+                      </span>
         </td>
       </tr>
     )

@@ -80,7 +80,6 @@ class RecipeEditor extends React.Component {
   }
 
   onNameChange = (e) => {
-    console.info(ReactDOM.findDOMNode(this.refs.name).value);
     //here add check input data
     let nextRecipe = this.state.recipe.setIn(['name'], ReactDOM.findDOMNode(this.refs.name).value);
     this.setState({
@@ -88,7 +87,6 @@ class RecipeEditor extends React.Component {
     });
   };
   onInstructionsChange = (e) => {
-    console.info(ReactDOM.findDOMNode(this.refs.instructions).value);
     //here add check input data
     let nextRecipe = this.state.recipe.setIn(['instructions'], ReactDOM.findDOMNode(this.refs.instructions).value);
     this.setState({
@@ -110,7 +108,6 @@ class RecipeEditor extends React.Component {
   };
   onRemoveClick = (e) => {
     e.preventDefault();
-    console.log('попросили удалить', this.props.recipeId);
     window.ee.emit('Recipe.remove', this.props.recipeId);
 
   };
@@ -130,9 +127,9 @@ class RecipeEditor extends React.Component {
         <EditorIngredients ingredients={ this.state.recipe.get('ingredients') } />
         <textarea className='recipe__instructions' onChange={ this.onInstructionsChange } placeholder='Describe how to cook it' ref='instructions'>
         </textarea>
-        <div className="recipe__controls">
-          <button onClick={ this.onSaveClick } className="blue"><i className="icon-submit"></i>Save</button>
-          <button onClick={ this.onRemoveClick } className="red float-right"><i className="icon-remove"></i>Remove</button>
+        <div className="recipe__controls meta">
+          <a onClick={ this.onSaveClick } className="savebutton blue"><i className="icon-submit"></i>Save</a>
+          <a onClick={ this.onRemoveClick } className="red float-right"><i className="icon-remove"></i>Remove</a>
         </div>
       </div>
       );

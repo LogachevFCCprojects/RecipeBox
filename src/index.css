@@ -71,10 +71,6 @@ table {
   margin: 0 0 1em;
 }
 
-table thead {
-  border-bottom: 1px solid #000;
-}
-
 table thead th {
   padding: 0.35em 0 .35em;
   font-weight: 400;
@@ -377,7 +373,7 @@ html, body, input[type="text"], textarea {
 }
 
 button, .meta a {
-  color: #f1f1f1;
+  color: #ebeef0;
   border-radius: 3px;
   height: 30px;
   border: 0;
@@ -388,7 +384,7 @@ button, .meta a {
   padding-right: 10px;
 }
 
-input[type="text"], textarea, input[type="checkbox"]:checked + span {
+input[type="checkbox"]:checked + span {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.37) inset;
   border-radius: 3px;
   border: none;
@@ -400,7 +396,7 @@ input[type="text"], textarea, input[type="checkbox"]:checked + span {
 }
 
 html, body {
-  background-color: #f1f1f1;
+  background-color: #ebeef0;
   line-height: 1.1;
 }
 
@@ -443,6 +439,10 @@ html {
 
 .float-right {
   float: right;
+}
+
+.hide {
+  display: none;
 }
 
 button.red {
@@ -514,7 +514,7 @@ a:hover .label {
 }
 
 .allingredients__body td + td {
-  padding-left: 1em;
+  padding-left: .5em;
 }
 
 .ingredient {
@@ -531,11 +531,12 @@ a:hover .label {
   text-decoration: underline;
   margin: 0;
   padding-left: .3em;
+  padding-right: .4em;
   padding-top: .4em;
 }
 
 .meta a:hover {
-  background-color: #666;
+  background-color: #212121;
   color: #FAFAFA;
   text-decoration: none;
 }
@@ -559,11 +560,17 @@ a:hover .label {
 div.meta {
   margin-bottom: 1em;
   border-radius: 3px;
-  padding: 1em;
 }
 
 span.meta {
   margin-left: .5em;
+}
+
+@media (max-width: 650px) {
+  .recipe span.meta {
+    display: block;
+    margin-left: 0;
+  }
 }
 
 /* ONLY list view */
@@ -585,6 +592,7 @@ span.meta {
   background-color: white;
   border-radius: 3px;
   padding: 1em;
+  border: 1px solid rgba(128, 128, 128, 0.27);
 }
 
 .recipe__footer {
@@ -597,7 +605,7 @@ span.meta {
   padding: 0;
 }
 
-.recipe__name {
+.recipe__list .recipe__name {
   display: inline-block;
   vertical-align: middle;
 }
@@ -621,6 +629,10 @@ span.meta {
   margin-top: .5em;
 }
 
+.recipe__list thead {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.27);
+}
+
 .recipe-editor {
   /*  sizing */
 }
@@ -634,12 +646,16 @@ span.meta {
 .recipe-editor td fieldset, .recipe-editor td button, .recipe-editor td input, .recipe-editor td a {
   height: 30px;
   vertical-align: middle;
-  margin-top: .6em;
-  margin-bottom: .6em;
+  margin-top: .25em;
+  margin-bottom: .25em;
+}
+
+.recipe-editor tr:first-child td fieldset, .recipe-editor tr:first-child td button, .recipe-editor tr:first-child td input, .recipe-editor tr:first-child td a {
+  margin-top: .5em;
 }
 
 .recipe-editor .ingredient__name {
-  width: 55%;
+  width: 62%;
 }
 
 .recipe-editor .ingredient__amount {
@@ -647,12 +663,37 @@ span.meta {
 }
 
 .recipe-editor .ingredient__measure {
-  width: 30%;
+  width: 23%;
+}
+
+.recipe-editor .ingredient__measure fieldset {
+  margin-right: 0;
+}
+
+.recipe-editor .ingredient__measure span.meta {
+  margin-left: 0;
+}
+
+@media (max-width: 650px) {
+  .recipe-editor .ingredient__name {
+    width: 100%;
+    display: block;
+  }
+  .recipe-editor .ingredient__amount {
+    width: 100%;
+    display: block;
+    padding-left: 0;
+  }
+  .recipe-editor .ingredient__measure {
+    width: 100%;
+    display: block;
+    padding-left: 0;
+  }
 }
 
 input[type="text"], textarea {
   width: 100%;
-  border: none;
+  border: 1px solid rgba(128, 128, 128, 0.27);
   border-radius: 3px;
   height: 30px;
   padding: .35em;
@@ -693,7 +734,7 @@ input[type="checkbox"] + span em {
 
 input[type="checkbox"]:checked + span {
   background-color: #00BCD4;
-  color: #f1f1f1;
+  color: #ebeef0;
   border-radius: 3px;
 }
 
@@ -704,7 +745,7 @@ input[type="checkbox"]:checked + span em {
 textarea {
   width: 100%;
   height: 120px;
-  border-color: #F5F5F5;
+  border-color: rgba(128, 128, 128, 0.27);
 }
 
 .recipe__name input {
@@ -712,4 +753,10 @@ textarea {
   font-family: 'Fira Sans Extra Condensed', sans-serif;
   font-weight: 700;
   font-size: 24px;
+}
+
+a.savebutton {
+  background-color: #00BCD4;
+  color: #FAFAFA;
+  text-decoration: none;
 }

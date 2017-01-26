@@ -4,6 +4,9 @@
 .float-right
   float: right
 
+.hide
+  display: none
+
 button.red
   background-color: $red
 button.green
@@ -48,7 +51,7 @@ a:hover .label
   td
     vertical-align: middle
   td + td
-    padding-left: 1em
+    padding-left: .5em
 
 .ingredient
   padding: .5em
@@ -64,17 +67,19 @@ button
     margin-left: .3em
     display: inline-block
     vertical-align: middle
+
+.meta
   a
     @extend %button
     text-decoration: underline
     margin: 0
     padding:
       left: .3em
+      right: .4em
       top: .4em
 
-
   a:hover
-    background-color: #666
+    background-color: $dark
     color: $white
     text-decoration: none
   a.grey:hover
@@ -89,7 +94,9 @@ button
 div.meta
   margin-bottom: 1em
   border-radius: $border-radius
-  padding: 1em
 span.meta
-  margin-left: .5em;
-   
+  margin-left: .5em
+@media (max-width: 650px) 
+  .recipe span.meta
+    display: block
+    margin-left: 0
