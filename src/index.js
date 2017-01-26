@@ -1,21 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './index.css';
 import EventEmitter from 'wolfy87-eventemitter';
+import './index.css';
+import './icons/basic-editor.css'
 
+// This module holds EventEmitter object 
+// and renders React first time
+
+// It does NOT know anything about data, logic or structure
 
 window.ee = new EventEmitter();
-
-Array.prototype.clone = function () {
-        let arr = this.slice(0), i;
-        for (i = 0; i < this.length; i += 1) {
-            if (this[i].clone) {
-                arr[i] = this[i].clone();
-            }
-        }
-        return arr;
-    };
 
 ReactDOM.render(
   <App />,

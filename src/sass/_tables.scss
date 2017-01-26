@@ -42,19 +42,14 @@ table {
 				padding: .75em 0;
 
 				a {
-					color: $primary-color;
 					text-decoration: none;
 					display: inline-block;
 					margin: 0 .5em 0 0;
-					&:hover, &:active, &:focus {
-						color: darken($primary-color, 10%);
-						border: none;
-					}
 				}
 			}
 		}
 	}
-
+ 
 	tfoot {
 		td {
 			padding: 0.35em 0 .35em;
@@ -70,17 +65,11 @@ table {
 
 		thead {
 			border-bottom: 1px solid $primary-color;
-			th {
-			}
-			
 		}
 
 		tbody {
 			tr {
 				border-bottom: none;
-				td {
-					
-				}
 			}
 		}
 	}
@@ -126,16 +115,6 @@ table {
 				}
 			}
 		}
-
-		tr:nth-of-type(even) {
-			//background: $gray-color;
-			td {
-				
-				&:before {
-					
-				}
-			}
-		}
 }
 
 @mixin rwd-second {
@@ -178,12 +157,6 @@ table {
 
 	tr:nth-of-type(even) {
 		background:none;
-		td {
-			
-			&:before {
-				
-			}
-		}
 	}
 }
 
