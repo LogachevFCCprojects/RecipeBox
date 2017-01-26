@@ -16,7 +16,6 @@ class EditorIngredients extends React.Component {
     } else {
       template = <p>No ingredients in this recipe</p>
     }
-    console.log('list renders');
     return (
       <div>
         <table className="allingredients">
@@ -24,7 +23,9 @@ class EditorIngredients extends React.Component {
             { template }
           </tbody>
         </table>
-        <button onClick={ this.onAddIngredientClick } className="green"><i className="icon-add"></i>Add one more Ingredient</button>
+        <a onClick={ this.onAddIngredientClick } className="green">
+          <i className="icon-add"></i>Add one more Ingredient
+        </a>
       </div>
       );
   }

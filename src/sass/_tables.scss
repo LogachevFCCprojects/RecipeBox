@@ -13,7 +13,7 @@ $global-radius: 4px;
   box-sizing: border-box;
 }
 main {
-  padding: 2em;  
+  padding: 2em;
   float: left;
   width: 100%;
 }
@@ -22,7 +22,7 @@ table {
 	border-collapse: collapse;
 	width: 100%;
 	float: left;
-   margin: 0 0 2em;
+  margin: 0 0 1em;
 	thead {
 		border-bottom: 1px solid $primary-color;
 		th {
@@ -39,7 +39,7 @@ table {
 			border-bottom: none;
        
 			td {
-				padding: .75em 0;
+				padding: .60em 0;
 
 				a {
 					text-decoration: none;

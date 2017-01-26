@@ -29,10 +29,16 @@ class App extends React.Component {
   addEventListeners() {
     // event
     window.ee.addListener('Recipe.remove', (id) => {
+      console.log('минуточку', id);
       let nextList = this.state.recipeList.splice(id, 1);
+      console.log(nextList);
       this.setState({
-        recipeList: nextList
+        recipeList: nextList,
+        route: {
+          current: 'list'
+        }
       });
+
     });
     // event
     window.ee.addListener('Recipe.edit', (id) => {
@@ -104,7 +110,7 @@ class App extends React.Component {
         <PageHeader />
         { (current === 'list') && <RecipeList recipeList={ recipeList } removeRecipe={ this.removeRecipe } /> }
         { (current === 'edit') && <RecipeEditor recipeId={ recipeId } recipe={ recipeList.get(recipeId) } /> }
-        { (current === 'add') && <RecipeEditor recipeId={ -1 } /> }
+        { (current === 'add') && <RecipeEditor /> }
       </section>
       );
   }

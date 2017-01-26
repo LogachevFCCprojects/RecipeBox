@@ -1,25 +1,29 @@
-/* ONLY editor */
 .recipe-editor
   td 
     margin-right: 1em
     padding:
       top: 0
       bottom: 0
-  td fieldset, td button, td input 
+
+  td fieldset, td button, td input, td a
     height: 30px
     vertical-align: middle
+    margin-top: .6em
+    margin-bottom: .6em
   /*  sizing */
   .ingredient__name
-    width: 45%
+    width: 55%
   .ingredient__amount
     width: 15%
   .ingredient__measure
-    width: 40%
+    width: 30%
 
 input[type="text"], textarea
   @extend %regular-font
+  @extend %inset-shadow
   width: 100%
-  border: 1px solid $light
+  border: none
+  border-radius: $border-radius
   height: $universal-height
   padding: .35em
   margin-top: 0
@@ -53,6 +57,7 @@ input[type="checkbox"] + span
     border-bottom: 1px dashed $link
 
 input[type="checkbox"]:checked + span
+  @extend %inset-shadow
   background-color: $blue
   color: $page-background
   border-radius: $border-radius
@@ -65,7 +70,7 @@ textarea
   border-color: $light
 
 .recipe__name input
-  height: $universal-height * 1.5
+  height: $universal-height * 1.23
   font-family: 'Fira Sans Extra Condensed', sans-serif
   font-weight: 700
-  font-size: 1.5em
+  font-size: 24px

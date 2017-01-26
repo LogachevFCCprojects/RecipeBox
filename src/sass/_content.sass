@@ -13,15 +13,12 @@ button.grey
 button.blue
   background-color: $blue
 
-[class^="icon-"]
-  margin-right: .2em
-  font-size: 1.2em
-  vertical-align: middle
-
 a 
-  text-decoration: none
-a:hover
   text-decoration: underline
+  opacity: 0.9
+a:hover
+  text-decoration: none
+  opacity: 1
 a.red
   color: $red
 a.green
@@ -31,6 +28,11 @@ a.grey
 a.blue
   color: $blue
 
+a .label
+  display: none
+
+a:hover .label
+  display: inherit
   
 /* Tables */
 .allingredients__heading
@@ -56,16 +58,38 @@ button
 
 .recipe__name
   @extend %title-font
-  
-/* UNSORTED */
-.ingredient__name
 
-  .ingredient__name, 
-    @extend %header-font
-    color: $link
-    text-decoration: underline
-
-  & > div
+.meta
+  & > *
+    margin-left: .3em
     display: inline-block
-    clear:none
     vertical-align: middle
+  a
+    @extend %button
+    text-decoration: underline
+    margin: 0
+    padding:
+      left: .3em
+      top: .4em
+
+
+  a:hover
+    background-color: #666
+    color: $white
+    text-decoration: none
+  a.grey:hover
+    background-color: $grey
+  a.red:hover
+    background-color: $red
+  a.green:hover
+    background-color: $green
+  a.blue:hover
+    background-color: $blue
+
+div.meta
+  margin-bottom: 1em
+  border-radius: $border-radius
+  padding: 1em
+span.meta
+  margin-left: .5em;
+   
